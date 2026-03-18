@@ -1,54 +1,84 @@
 ---
 title: "Final Data Project"
 author: "DataTrail Team"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
-# Final Data Project
+# Share Results
 
-## Your objectives!
+## Final Project
 
-To complete this project there are a few requirements you will need to fulfill. Remember that you are not on your own for this project! Data science is done best as a community, so please ask others (and instructors) questions you have when you get stuck!
+Welcome to your final data storytelling project! This R Notebook template will guide you step-by-step as you build a compelling, reproducible, data-driven narrative.
 
-1. Clearly state the data science question and goal for the analysis you are embarking on.
+Use the prompts in each section to shape your story, and share your analysis using this template.
 
-2. This project should be completely uploaded and up to date on GitHub. Follow the steps in `Pushing and Pulling Changes` chapter for how to git add, commit, and push the changes you have done.
+## Objectives for this project
 
-3. Follow good organization principles -- you should at least have 2 folders: a `results` folder and a `data` folder. 4. 4. You should also have a README
+To complete this project, there are a few requirements you’ll need to fulfill. Remember that you’re not on your own for this project! Data science is best done as a community. If you get stuck or want to talk through your approach, don’t hesitate to ask questions. If you're in an in-person instructional setting, reach out to your instructors. You can also connect with others in your cohort, post on the community slack, or explore the Posit Community forums, where people of all experience levels share ideas, troubleshoot, and support each other.
 
-5. Make a resulting plot that you save to a file.
+This project should be completely uploaded and up to date on GitHub. Follow the steps in [Pushing and Pulling Changes](https://datatrail-jhu.github.io/DataTrail/pushing-and-pulling-changes.html) chapter for how to git add, commit, and push the changes you have done.
 
-6. Write up your final observations in regards to your original question. Note that some data science projects end with "This isn't what I thought it would be" or "that's strange" or "I think this is leading into another question I would need to investigate". Whatever your observations may be, write them up in your main R Markdown.
+1.  At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`, replace it with your name in the quotes. Also be sure to change the `title:` where it currently says `"Final Data Project"`.
 
-7. When you feel your analysis is ready for review, send your instructor the GitHub link to your project so they can review it.
+2.  Follow good organization principles, you should at least have 2 folders: a `results` folder and a `data` folder.
 
-8. Pat yourself on the back for all this work! You are a data scientist!
+3.  You should also have a README
+
+4.  Make plots of results that you save to files.
+
+5.  Write up your final observations in regards to your original question. Note that some data science projects end with "This isn't what I thought it would be" or "that's strange" or "I think this is leading into another question I would need to investigate". Whatever your observations may be, write them up in this R Markdown.
+
+6.  When you feel your analysis is ready for review, send your instructor the GitHub link to your project so they can review it.
+
+7.  Pat yourself on the back for all this hard work! You are well on your way to becoming a data scientist!
+
+## Project Planning
+
+This section is meant to help you define your research question and why it matters, similar to how we have done in the previous projects.
+
+-   What is the research question you're exploring?
+
+-   What have others explored about this topic?
+
+-   Why is this topic interesting or important?
+
+-   What do you hope to find or demonstrate?
+
+*Note: If you need some inspiration on Telling Stories through data visualizations? A helpful resource is this [VOX article](http://www.vox.com/a/teens) using the YRBS data.*
 
 ## Data Sources
 
-For this project you will use whatever data you choose.
+For this project, you have the freedom to choose your own dataset! Find something that sparks your curiosity and helps you dive into the question you want to explore. It’s your data adventure!
 
-Refer back to our [Finding Data chapter](https://datatrail-jhu.github.io/DataTrail/finding-data.html) for more info on finding data.
+*Hint: You may refer back to our [Finding Data chapter](https://datatrail-jhu.github.io/DataTrail/finding-data.html) for more info on finding data.*
 
 Some options for places to find data are:
 
-- [Kaggle](https://datatrail-jhu.github.io/DataTrail/finding-data.html#kaggle)
-- [FiveThirtyEight](https://datatrail-jhu.github.io/DataTrail/finding-data.html#fivethirtyeight-data)
-- You can see datasets you already have in R by running this command: `ls("package:datasets")`.
+-   [Kaggle](https://datatrail-jhu.github.io/DataTrail/finding-data.html#kaggle)
+-   [FiveThirtyEight](https://datatrail-jhu.github.io/DataTrail/finding-data.html#fivethirtyeight-data)
+-   You can also see datasets you already have in R by running this command: `ls("package:datasets")`.
 
 You are not limited to these options for finding your data.
 
-<Write where you got your data and provide the link if applicable.>
+Describe the dataset(s) you are using. Include:
 
-<Describe how the data was originally created. If this is data that is part of `datasets` you can use the `?` like so: ` ?datasets::AirPassengers` to see information about the datasets.Otherwise provide a summary based on the source of the data.>
+-   Dataset name, source and link (if public)
 
-## The goal of this analysis
+    -   Describe where you found your data and provide the link if applicable.
 
-<Write here what the goal of this analysis is. What question are we trying to answer?>
+    -   Describe how the data was originally created. If your dataset is built into R (like one from the `datasets` package), you can learn more about it by using the help function—for example: `?datasets::AirPassengers`. If your dataset is from another source (like a file or online database), write a short summary explaining where the data came from, how it was collected, and any other useful context.
 
-## Set up
+-   A brief description on what the data contains
 
-Load packages you will need for this analysis.
+## Goal
+
+\<Write here what the goal of this analysis is. What question are we trying to answer?\>
+
+## Setting up packages
+
+Load the packages you will need for this analysis.
 
 ```{r}
 ## you can add more, or change...these are suggestions
@@ -59,7 +89,7 @@ library(ggplot2)
 library(tidyr)
 ```
 
-## Set up directories
+## Setting up directories
 
 Set up the directories you will need.
 
@@ -72,16 +102,21 @@ if (!dir.exists("results")) {
 }
 ```
 
-
-## Get the data
-
-<Write here a bit about this dataset and put a link to where it is from>
+## Getting the data
 
 ```{r}
 # Read in your dataset(s)
 ```
 
-Explore your data here
+## Exploring the data
+
+It's important to get an initial sense of what your dataset looks like.
+
+-   Look at the column names
+
+-   Preview the first few rows
+
+-   Summarize key statistics to get a sense of the data
 
 ```{r}
 
@@ -89,32 +124,55 @@ Explore your data here
 
 ## Cleaning the data
 
+Document any cleaning steps here.
+
+-   Should you filter any rows?
+-   Do you need to create new columns?
+-   Are there any missing values?
+
+*Reminder: The [dplyr](https://dplyr.tidyverse.org/) package was created for data wrangling, which is another way of saying data manipulation and cleaning. The six most commonly used data manipulation functions in this package are: `arrange`, `select`, `filter`, `mutate`, `summarize` and `group_by`.*
 
 ```{r}
 
 ```
 
-## Plot the data!
+## Plotting the data
+
+Use this section to analyze your data and create plots that support your research question.
+
+Reminder: [ggplot2](https://ggplot2.tidyverse.org/) is one of the most widely used packages for data visualization in R. It is one of the most common packages for creating plots.
 
 ```{r}
-ggplot(aes(VARIABLE)) +
-  geom_point()
+#ggplot(aes(VARIABLE)) +
+  #geom_point()
 ```
 
-## Get the stats
+## Calculating the stats
 
+Use this section to perform statistical analyses and create visualizations based on those analyses. This includes exploring relationships between variables, for example, generating correlation plots or other relevant charts. Be sure to interpret any patterns or trends you observe and explain what they might suggest about the data.
 
-### Conclusion
+```{r}
+
+```
+
+## Conclusion
 
 Write up your thoughts about this data science project here and answer the following questions:
 
-- What did you find out in regards to your original question?
-- What exceptions or caveats do you have in regards to your analysis you did?
-- What follow up questions do you have?
+-   What did you find out in regards to your original question?
+-   What exceptions or caveats do you have in regards to your analysis you did?
+-   What did you find most challenging about this project?
+-   What follow up questions do you have?
 
-## Print out session info
+## Printing out session info
 
-Session info is a good thing to print out at the end of your notebooks so that you (and other folks) referencing your notebooks know what software versions and libraries you used to run the notebook.
+It’s good practice to include your session info at the end of your R Markdown notebook. This provides a snapshot of your R environment. It includes the version of R, the platform you’re running on, and the packages and libraries (including version numbers) that were loaded when the notebook was run.
+
+This is helpful for:
+
+-   Reproducibility (making sure others can run your code the same way)
+
+-   Understanding what software versions were used
 
 ```{r}
 sessionInfo()

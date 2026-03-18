@@ -28,9 +28,9 @@ To complete this project you’ll need to do a few things within this file. As y
 
 6.  When you are satisfied with what you’ve written and added to this document you’ll need to save it. In the menu, go to File \> Save. Now the nb.html output resulting file will have your new output saved to it.
 
-7.  Open up the resulting first_project.nb.html file and click View in Web Browser. Does it look good to you? Did all the changes appear here as you expected.
+7.  Open up the resulting first_project.html file and click View in Web Browser. Does it look good to you? Did all the changes appear here as you expected.
 
-8.  Upload your Rmd and your nb.html to your assignment folder (this is something that will be dependent on what your instructors have told you. If you are taking this on your own, just collect these projects in one spot, preferably a Google Drive).
+8.  Upload your Rmd and your .html to your assignment folder (this is something that will be dependent on what your instructors have told you. If you are taking this on your own, just collect these projects in one spot, preferably a Google Drive).
 
 9.  Pat yourself on the back for finishing up your first project!
 

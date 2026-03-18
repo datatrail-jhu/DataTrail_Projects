@@ -1,43 +1,99 @@
 ---
 title: "Cleaning Data Project"
 author: "DataTrail Team"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
-# Cleaning Data Project
+# Cleaning Data
+
+## Project: Country's literacy rates and life expectancy
+
+In this project, you will walk through the process of preparing and analyzing country level data to explore the relationship between literacy rates and life expectancy.
+
+The dataset includes information from multiple global sources, including literacy rates and life expectancy data for both males and females. You will load, clean, and transform the data using tools from the tidyverse. Along the way, you will need to handle missing values, reshape the data for easier plotting, and join multiple datasets together.
+
+Once the data is in good shape, you will create some visualizations to explore how literacy and life expectancy are connected, and use statistical tools to quantify that relationship. This project will give you hands-on practice with real-world data cleaning and analysis, an essential part of the data science workflow.
 
 ## Objectives for this project
 
 To complete this project you’ll need to do a few things within this file. As you go through the notebook, you will have further instruction on how to complete these objectives.
 
-1. Go through this notebook, reading along.
+1.  At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`, replace it with your name in the quotes.
 
-2. Fill in empty or incomplete code chunks when prompted to do so.
+2.  Read through this notebook carefully, following along with each section.
 
-3. Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
+3.  Fill in the empty or incomplete code chunks when prompted.
 
-4. At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`. Be sure to put your name in quotes.
+4.  Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
 
-5. In the `Conclusions` section, write up responses to each of these questions posed here.
+5.  In the Conclusions section at the end, write thoughtful responses to each of the questions provided.
 
-6. When you are satisfied with what you've written and added to this document you'll need to save it. In the menu, go to `File` > `Save`. Now the `nb.html` output resulting file will have your new output saved to it.
+6.  When done with this project notebook save the file by going to File \> Save in the RStudio menu. This will update the output `.html` file to reflect your changes.
 
-7. Open up the resulting `countries_project.nb.html` file and click `View in Web Browser`. Does it look good to you? Did all the changes appear here as you expected.
+7.  Open up the resulting `countries_project.html` file and click “View in Web Browser”. Check to make sure everything looks good and your changes are showing up as expected.
 
-8. Upload your `Rmd` and your `nb.html` to your assignment folder (this is something that will be dependent on what your instructors have told you -- or if you are taking this on your own, just collect these projects in one spot, preferably a Google Drive)!
+8.  Upload your `Rmd` and your `.html` to your assignment folder (this is something that will be dependent on what your instructors have told you – or if you are taking this on your own, just collect these projects in one place, preferably a Google Drive).
 
-7. Pat yourself on the back for finishing this project!
+## Goal
 
-## The goal of this analysis
+The goal of this analysis is:
 
-<Write here what the goal of this analysis is. What question are we trying to answer?>
+\<Write here what the goal of this analysis is. What question are you trying to answer?\>
 
-## Set up
+Example response: The goal of this analysis is to use the data in `countries_df` to answer our question about whether literacy rates are related to life expectancy.
 
-Let's load these packages for use.
+By cleaning, reshaping, and analyzing this data including splitting by gender and accounting for different years.
+
+## **R Packages**
+
+For a refresher of what an R package is See [Data Trail Section 22.0.1 What is an R package?](https://datatrail-jhu.github.io/DataTrail/r-packages.html) or the Set up Packages section in the previous project notebook
+
+These are the R packages you will be using:
+
+-   [tidyverse](https://www.tidyverse.org/packages/)
+
+-   [readr](https://readr.tidyverse.org/)
+
+-   [dplyr](https://dplyr.tidyverse.org/)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/)
+
+-   [tidyr](https://tidyr.tidyverse.org/index.html)
+
+-   [janitor](http://rdocumentation.org/packages/janitor/versions/2.2.1)
+
+-   [naniar](https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html)
+
+## Setting up packages
+
+Before using any package in R, let’s first make sure it’s installed and ready to go!
+
+To check if a package is installed there are a few options:
+
+-   Use `installed.packages()`: This shows a list of all packages currently installed.
+
+-   Use `library()`: This lists all the packages you can load.
+
+-   Check the “Packages” tab in RStudio: It shows a list of installed packages.
+
+    -   Look for the tab usually on the bottom-right panel.
+
+    -   You can also search for a specific package using the search bar!
+
+If any of the packages are missing, it means they have not yet been installed. Go ahead and install them using the `install.packages()` function.
+
+```{r, solution = TRUE}
+#install.packages("naniar")
+```
+
+To then use a package, you need to load it using the `library()` function. Loading the package makes its functions available for use.
+
+Load all of the packages below:
 
 ```{r}
-## you can add more, or change...these are suggestions
+## hint: you will need to add to this section
 library(tidyverse)
 library(readr)
 library(dplyr)
@@ -45,9 +101,9 @@ library(ggplot2)
 library(tidyr)
 ```
 
-## Set up directories
+## Setting up directories
 
-Here we are going to make a directory or folder called `data`, if it doesn't already exist. No need for you to change this code. 
+Here, you are making sure there’s a folder called `"data"` in your project. If it doesn’t already exist, you will create it using this code:
 
 ```{r}
 if (!dir.exists("data")) {
@@ -55,173 +111,316 @@ if (!dir.exists("data")) {
 }
 ```
 
+#### [**Breaking it down**]{.underline}
 
-## Get the data
+-   `dir.exists("data")`: Checks whether a folder named `"data"` already exists in your project directory.
 
-We are going to use two different country datasets from [Kaggle](https://www.kaggle.com/).
+-   `!dir.exists("data")`: The `!` means “not”, so this condition checks: “Does the folder not exist?”
 
-This UN data-derived dataset with various stats about different countries: https://www.kaggle.com/datasets/sudalairajkumar/undata-country-profiles
-The resulting CSV file is called `country_profile_variables.csv`.
+-   `if (...) { ... }`: This is a basic if-statement. It says: If the folder doesn’t exist, then do what’s inside the `{}`.
 
-This literacy dataset with statistics about literacy across countries
-https://www.kaggle.com/datasets/programmerrdai/literacy
+-   `dir.create("data")`: If the condition is true, this line creates a new folder named “data”.
 
-The resulting CSV file is called `cross-country-literacy-rates`.
+## **Getting the data**
 
-Both datasets have been downloaded and placed in the `raw` folder (also called a directory) within the `data` folder of the `03_Cleaning_the_Data` project folder. Use `readr::read_csv()` function to read each dataset into R. Call the first one `un_df` and the second `literacy_df`. 
+For this project, you will be using two different datasets about countries from Kaggle.
 
-```{r, solution = TRUE}
-# Read in the dataset for un_df
-### Your code here
-```
+1.  UN Country Profiles Dataset: This dataset includes a variety of statistics about different countries (like population, income, health, and more).
 
-```{r, solution = TRUE}
-# Read in the dataset for literacy_df
-### Your code here
-```
+    -   Link: [UN Country Profiles on Kaggle](https://www.kaggle.com/datasets/sudalairajkumar/undata-country-profiles)
 
-Use functions we have discussed previously to see what variables are in both `un_df` and `us_gov_df`.
+    -   File name: `country_profile_variables.csv`
 
-```{r, solution = TRUE}
-### Your code here
-```
+2.  Literacy Rates Dataset: This dataset focuses on literacy statistics across countries.
 
-```{r, solution = TRUE}
-### Your code here
-```
+    -   Link: [Literacy Dataset on Kaggle](https://www.kaggle.com/datasets/programmerrdai/literacy)
 
-### Cleaning the datasets
+    -   File name: `cross-country-literacy-rates.csv`
 
-You'll notice both datasets have pretty messy looking column names that are annoying to use. Use the `janitor::clean_names()` function to clean these up. Don't forget to reassign the data objects!
+These two files have already been downloaded and saved in the `data/raw` folder of your project.
+
+You will work with these two data frames throughout the project to explore trends and relationships between different country-level statistics.
+
+Use the `readr::read_csv()` function to read them into R.
+
+*Hint: If you need a refresher on using* `read_csv()`*you can revisit chapter 24 section [24.0.4 Reading files into Posit Cloud](https://datatrail-jhu.github.io/DataTrail/dataset-file-types.html).*
+
+Load the first dataset into a variable named `un_df`. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-#### Clean up literacy_df
-
-The `literacy_df` data frame shows multiple rows for each country. For this analysis, let's only keep the latest year recorded for each country.
-You can use  `arrange()` and `desc()` (or a minus sign)  to first order the data by the latest year recorded for each country.  Then use the `distinct()` function to keep only rows from the lastest year for each country by essentially selecting for the first mention of each country. Hint you will need to use an argument within `distinct()` to not lose the other columns. (Again don't forget to reassign your data objects to keep your work.)
+Load the second dataset into a variable named `literacy_df`. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
+## Exploring the data
 
-#### Clean up un_df
+Before diving into analysis, it’s helpful to get familiar with the data. Let's see what variables it includes. One easy way to start is by looking at the names of the columns (also known as variables) in your dataset.
 
-There's a number of variables in `un_df` that are numeric but are being treated as a character. Use the `glimpse()` function of the `dplyr` package to take a look at the variables to determine how often there are numeric values that are being treated as a character.
+Use one of the functions we’ve discussed before to list out the column names.
 
-Let's take a look at `life_expectancy_at_birth_females_males_years` as an example. Use the `head()` function and print out the first 10 rows to see.  
+Hint: You can revisit chapter 18 section [18.1.1 Subsetting data frames](https://datatrail-jhu.github.io/DataTrail/data-frames-1.html) and chapter 19 section [19.0.4 Are there named features of this object?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html)
+
+Let's see what variables `un_df` includes. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-Let's also take a closer look at `co2_emission_estimates_million_tons_tons_per_capita` as an example.
+Now let's also see what variables `literacy_df` includes. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-Two things we can notice here. One is that really `life_expectancy_at_birth_females_males_years` looks like it is two variables, one for female and one for male. We'll want to split this into two columns. 
+## Cleaning the data
 
-Another is that they are using two different items to note missing data `-99` and `...` For R to deal with missing data appropriately we will want to change these to be `NA`. This is also true for the `co2_emission_estimates_million_tons_tons_per_capita` variable which is being considered by R as a numeric value (based on how it is labeled as `dbl`).
+### Cleaning column names
 
-Let's start with some of the missing data. To replace these `-99`(the numeric version) and `"-99"` (the character version) and `.../...` , we can use the function: `naniar::replace_with_na()`. We'll want to do this for every variable, not just the one we looked at above.  When we replace each of these they will have a single `NA` value even though we have two values for the observations where we have numeric values.
+When you look at the datasets, you may notice that the column names are a bit messy. Some may have spaces, punctuation, or capital letters that make them harder to work with in R.
+
+To fix this, you will need to clean up the column names using a function from the janitor package called `clean_names()`. Janitor is designed to work well with other tidyverse packages like dplyr and readr, making it easy to integrate into data cleaning workflows.
+
+*Hint: For a refresher on janitor see chapter 32 section [32.0.3 janitor](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html).*
+
+Write your code to clean both data objects in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-Let's check to see if this did what we expected.
+### Keeping the most recent year
+
+In literacy_df, you’ll see that some countries appear multiple times, once for each year data was collected. For your analysis, you will want to only keep the most recent (latest) year of data for each country.
+
+You can use a few helpful functions from the [dplyr](https://dplyr.tidyverse.org/) package such as `arrange()`, `desc()`, and `distinct()` to narrow down the dataset so that each country shows up only once, using the latest available data.
+
+*Hint: For a refresher on* dplyr *functions see chapter 32 section* [32.0.1 dplyr](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html) you can also see section [32.0.7.2 Reordering Rows](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html)*.* *You will need to use an argument within `distinct()` to not lose the other columns.*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
+# or
+
 ```
 
-Great, hopefully it looks like we have replaced the the `-99` ,`"-99"`, and `.../...` values. It also looks like we don't have any values like this `.../49.6` or this `56.2/...`. If we did we would need to do something a little fancier (possibly with the `stringr` package) but for now we don't need to worry about that. It is always good to check your data though!
+### Replacing missing values
 
-Let's split the column `life_expectancy_at_birth_females_males_years`  into two columns so we can more appropriately deal with these data. To do this we can use a handy function called `tidyr::separate()`. Call the new resulting columns `"life_expectancy_at_birth_females"` and `"life_expectancy_at_birth_males"` by specifying this with the `into` argument. We can specify that we want to separate by the `/` symbol by using the `sep` argument. For observations where we have an `NA` value, both new columns will receive an `NA`.
+In un_df, some columns seem numeric and certainly contain numbers, but R is currently treating them as text (character). This can cause problems when trying to run your analysis, including statistical calculations and incorrect plotting behaviors.
+
+Let’s take a look one of those columns more closely: **`life_expectancy_at_birth_females_males_years`**
+
+Use the `head()` function to view the first 10 values in this column.
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
+Now let’s take a closer look at another column in the dataset called `co2_emission_estimates_million_tons_tons_per_capita`. This column contains information about estimated carbon dioxide emissions for each country.
 
-After splitting these data, you'll notice they are still characters, so you will need to coerce them to numeric variables with a `mutate()` step.
+*Hint: Try using the same function we used in the previous code chunk to see the first 10 values in this column.*
 
-In fact, there are a lot more columns like this. But for now just make these life_expectancy  variables into numeric and don't worry about the others.
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-The `un_df` has a `region` column.
+You will hopefully notice two important things about the data here:
 
-Let's run `summary()` on it.  
+1.  The life expectancy column contains two pieces of information (one for females and one for males) in a single column. You will eventually need to separate these into two columns so you can work with them more easily.
+
+2.  The co2 emissions column seems to be using both -99 and .../... to denote missing data. R doesn’t automatically recognize these as missing values. You will need to convert them to `NA`, which is how R understands missing data.
+
+3.  In some character columns, you might also see "99" used as a placeholder for missing data. Although this looks like a number, if it’s stored as text (i.e., a character column), R will not interpret it as missing. You’ll need to explicitly replace "99" with NA as well.
+
+To fix this (missing data), you can use a function from the [naniar](https://www.rdocumentation.org/packages/naniar/versions/0.0.3.9901) package called `replace_with_na()`. This function helps us change any values such as `-99` , `"-99"` or `.../...` into proper `NA`s.
+
+Note: The naniar package will be covered in chapter 54 section [54.0.1.2 Missing Values](https://datatrail-jhu.github.io/DataTrail/descriptive-analysis.html).
+
+Since this problem might be in more than one column, you will need to apply this to all the variables in the dataset, not just the one you looked at earlier.
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-The regions listed are repeated but because they are characters, summary doesn't give us useful information about the categories.
-This `region` columns would be best treated as factors. Turn this `region` column into a factor.
+### Checking your work
+
+Now that you have instructed R to replace values like `-99`, `"-99"`, and `".../..."` with proper missing data (`NA`), double-check to make sure it worked.
+
+Create code that helps us look at the first 10 values in two specific columns of the dataset. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-Re-run `summary` on your region columns  to confirm that the data make more sense now.
+Great, hopefully you successfully replaced the odd missing values like `-99`, `"-99"`, and `".../..."` with proper missing data (`NA`).
+
+### Splitting one column into two
+
+Hopefully you noticed earlier that the column `life_expectancy_at_birth_females_males_years` actually includes two numbers in a single cell: one for females and one for males, separated by a slash `/`.
+
+To clean this up, let's split that one column into two new columns: one for females and one for males.
+
+You can do this using a function called `separate()` from the [tidyr](https://tidyr.tidyverse.org/index.html) package.
+
+*Hint: The separate function was covered in chapter 32 section [32.0.2 tidyr](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html) and [32.0.9 Separating Columns](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html).*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-### Joining the data
+### Converting text to numbers
 
-Now we have two generally clean datasets that both have information about countries. Use a `dplyr::join` function to join all the rows for countries that are in both `un_df` and `literacy_df` but exclude rows from countries that aren't in both. Look up `?dplyr::join` for more help. You will need to use the `by` argument.
+After splitting the `life_expectancy_at_birth_females_males_years` column into two separate columns (one for females and one for males) you might notice something odd:
 
-Call this new data frame `countries_df`.
+Even though these columns look like numbers, R is still treating them as character strings (text).
+
+To fix this, you will need to convert them into numeric variables. You can use the `mutate()` function from the [dplyr](https://dplyr.tidyverse.org/) package. There are other columns with this issue but for now just focus on converting the two recently split `life_expectancy` variables into numeric variables.
+
+*Hint: The mutate function was covered in chapter 32 section [32.0.1 dplyr](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html) and [32.0.8 Creating new columns](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html)*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-We will be returning to this dataset in a future project. Save `countries_df` to an RDS file here. Save this file to the `data` folder and name it `countries_df.rds`.
+It would also be helpful to explore some of the factor-based variables. The `un_df` has a `region` column, let's take a closer look by using `summary()` function on the `region` column of the `un_df` data frame.
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-### Reshape data in preparation for plotting
+### Working with factors
 
-We want to see how literacy is related to life expectancy. But have literacy split up by gender. Let's reshape our data into something that will be easier to plot.
+Right now, the `region` column in the dataset is being treated as plain text (called a "character" in R), but it actually represents categories as different parts of the world. To make sure R understands that these are not just words but meaningful groups, you will need to convert this column into a factor.
 
-First, select only the following columns: `country`, `year`, `life_expectancy_at_birth_females`, `life_expectancy_at_birth_males`, and `literacy_rates_world_bank_cia_world_factbook_and_other_sources`. Name this new `select`ed data frame `plotting_df`.
+*Hint: You can revisit chapter 35 for more details in the intro in [Working with Factors](https://datatrail-jhu.github.io/DataTrail/working-with-factors.html) and also section [35.0.1 Factor basics](https://datatrail-jhu.github.io/DataTrail/working-with-factors.html).*
 
-In this same step, let's also shorten the column name `literacy_rates_world_bank_cia_world_factbook_and_other_sources` to just `literacy_rates`.
+A factor helps R handle repeated categories better when analyzing or visualizing the data. For example, when you run `summary()` on a factor, R tells you how many times each category appears.
+
+Since the `region` columns would be best treated as factors, turn the `region` column into a factor using the mutate function with the as.factor function. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-Now, let's reshape this data so that it is longer. We will want to modify the `life_expectancy_at_birth_females` and `life_expectancy_at_birth_males` variables so that we instead have one column for `life_expectancy` values and one for `gender` which specifies what column the values originally came from. We want to keep `country`, `year`, `literacy_rates`. Use the `pivot_longer` function.
+Now that you have changed the `region` column to a *factor*, you will want to double-check that it worked as expected. Write your code in the code chunk below:
+
+*Hint: By running the `summary()` function on this column again, you should see a clear count of how many countries fall into each region category. This should be more helpful than when the regions were treated as plain text.*
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-You'll notice your new column `gender` has the whole old variable name. We don't really need all that. Use string manipulations so that you only have either `males` or `females`.
+## Joining datasets
+
+You may have noticed that both datasets contain information about countries. Now that both datasets (`un_df` and `literacy_df`) are cleaned up, you can combine them into one dataset named `countries_df`. For downstream purposes you will want to only keep the rows for countries that appear in both datasets. To do that, you'll need to use a `dplyr::join` function.
+
+*Hint: You can revisit chapter 33 sections [33.1 dplyr join family of functions](https://datatrail-jhu.github.io/DataTrail/joining-data.html) and [33.1.0.1 inner_join()](https://datatrail-jhu.github.io/DataTrail/joining-data.html). You will need to tell R how to match the rows between the two datasets. In this case, the country names are stored in a column called `"country"` in `un_df`, and in a column called `"entity"` in `literacy_df`. Be sure to keep only countries that show up in BOTH datasets.*
+
+Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
+
+## Saving the combined dataset
+
+Now that you have created the new combined dataset `countries_df`, save it as an RDS file. An RDS file is a special format that saves R objects exactly as they are, so you can load them quickly without losing any information.
+
+*Hint: If you need to revisit how to save as an RDS file you can revisit chapter 24 section [24.0.5 Writing CSV files into Posit Cloud](https://datatrail-jhu.github.io/DataTrail/dataset-file-types.html).*
+
+Save this file in the `data` folder and call it `countries_df.rds`. Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
+
+## Plotting the data
+
+When explore how literacy relates to life expectancy, you only need a few specific columns from the larger dataset. In this step, you are creating a smaller, simpler version of your data called `plotting_df` that includes:
+
+-   The country name: `country`
+
+-   The year of the data: `year`
+
+-   Life expectancy for females: `life_expectancy_at_birth_females`
+
+-   Life expectancy for males: `life_expectancy_at_birth_males`
+
+-   Literacy rates: `literacy_rates_world_bank_cia_world_factbook_and_other_sources`
+
+You will also need to shorten the long and complicated column name for literacy to just `literacy_rates`, which will make the data easier to work with and read when plotting.
+
+To do this write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
+
+### Reshaping Data to Long Format
+
+Right now, the dataset has two separate columns for life expectancy: one for females and one for males. In order to plot and run analysis, it’s often easier to have one single column for life expectancy values and another column that tells us whether each value is for a male or female.
+
+In this step, you will "reshape" the data from a wide format (with separate columns for each gender) to a long format (with a single column for gender and a single column for life expectancy).
+
+You will keep the important columns like country, year, and literacy rates, and use `pivot_longer()` to combine the two gender columns into a pair of new columns: one called `gender`, and one called `life_expectancy`.
+
+*Hint: You can revisit where the `pivot_longer()`function was covered in chapter 32 section [31.0.2.1 tidyr](https://datatrail-jhu.github.io/DataTrail/reshaping-data.html)* *and [31.0.2.1.1 pivot_longer()](https://datatrail-jhu.github.io/DataTrail/reshaping-data.html).*
+
+Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
+
+### Cleaning the Gender Column
+
+After reshaping the data, the new `gender` column contains long and unnecessary text like `"life_expectancy_at_birth_females"` or `"life_expectancy_at_birth_males"`. All that is really needed is `"females"` or `"males"`.
+
+To clean this up, we will use `str_remove(...)` a string manipulation function that removes the extra part of the text. We will want to use the `str_remove()` function inside `mutate()`. This will help to clean up the values in the `gender` column by removing the prefix `"life_expectancy_at_birth_"`. This step simplifies the text so that the column just contains the gender category (like `"female"` or `"male"`) instead of the full original string. Cleaning up text like this makes the data easier to read, work with, and use in plots or summaries later on.
+
+*Hint: You can revisit chapter 34 [Working with Strings](https://datatrail-jhu.github.io/DataTrail/working-with-strings.html) for additional information on string manipulation functions.*
 
 ```{r}
 plotting_df <- plotting_df %>%
   mutate(gender = str_remove(gender, "life_expectancy_at_birth_"))
 ```
 
-## Plot the data!
+#### [**Breaking it down:**]{.underline}
 
-Let's make a scatter plot of life expectancy and literacy rates! Color the plot by year.
+-   `plotting_df <-`: Replaces the existing `plotting_df` with the updated version.
+
+-   `plotting_df`:is the object we will manipulate
+
+-   `%>%`: Passes the dataset into the next function (`mutate()`).
+
+-   `mutate(...)`: Updates the `gender` column with a cleaned version.
+
+-   `str_remove(...)`: Removes the text `"life_expectancy_at_birth_"` from each value in the `gender` column.
+
+    -   So `"life_expectancy_at_birth_females"` becomes `"females"` and `"life_expectancy_at_birth_males"` becomes `"males"`.
+
+After this step, the `gender` column will be short, clear, and easy to read: just `"females"` or `"males"`.
+
+### Scatter Plot
+
+Now that the data is clean and reshaped, let’s create a scatter plot to visually explore the relationship between life expectancy and literacy rates. Each point on the plot represents a country, and each color indicates the year the data was recorded. This kind of plot helps you see if there's any trend or pattern between these two variables.
 
 ```{r}
 lit_plot <- plotting_df %>%
@@ -234,23 +433,75 @@ lit_plot <- plotting_df %>%
 lit_plot
 ```
 
-This looks like literacy and life expectancy are positively related to each other. In other words, in countries with higher literacy rates, there's also a longer life expectancy.
+#### [**Breaking it down:**]{.underline}
 
-In this plot we've color coded by the year that the literacy data was recorded. This way we are aware of how differences in years might influence this relationship.
+-   **`lit_plot <-`**:This part is naming and saving the plot as an object called `lit_plot`. This is the first time we're doing this so instead of displaying the plot immediately, we're saving the plot itself as an object.
 
-But! Really, we've lumped together `female` and `male` data points with each country which isn't really the right way to treat this data. Let's use `facet_wrap()` to make this one plot into two separate plots.
+-   `plotting_df %>%`: Starts with the cleaned and reshaped data.
 
-We can also add a trend line to get a better sense of how these two variables relate to one another using `geom_smooth()`.
+-   `ggplot(...)`: Initializes a plot using the `ggplot2` package.
+
+-   `aes(life_expectancy, literacy_rates, color = year)`:
+
+    -   Sets `life_expectancy` as the x-axis.
+
+    -   Sets `literacy_rates` as the y-axis.
+
+    -   Colors the points based on the `year` to show time-based differences.
+
+-   `geom_point()`: Adds the actual points to the scatter plot.
+
+-   `theme_minimal()`: Applies a clean, minimal visual style.
+
+-   `ylab("Literacy Rates")` and `xlab("Life Expectancy")`: Adds clear axis labels.
+
+-   `lit_plot`: Displays the plot.
+
+After running this code, you’ll see a colorful scatter plot showing the relationship between life expectancy and literacy rates, colored by year.
+
+### Refining the Plot by Gender and Adding a Trend Line
+
+Our first scatter plot showed a positive relationship between literacy rates and life expectancy. It showed that in general, countries with higher literacy tend to also have higher life expectancy.
+
+However, that graph included both female and male data points in the same plot, which may not be the best way to look at gender differences. To look at this a different way, we will split the plot into two separate panels (one for each gender) using `facet_wrap()`.
+
+We will also add a trend line using `geom_smooth()` to better see the direction and strength of the relationship in each group.
+
+*Note: We will cover Facets in more detail in chapter 41section [41.0.5 Facets](https://datatrail-jhu.github.io/DataTrail/introduction-to-ggplot2.html) and the `geom_smooth()` in chapter 57 section [57.0.0.1.1 Association Testing in R](https://datatrail-jhu.github.io/DataTrail/inference-linear-regression.html)*
 
 ```{r}
 lit_plot + facet_wrap(~gender) + geom_smooth()
 ```
 
-It looks like this relationship is stable across `male` and `female`.  It also looks like a stronger relationship for the life expectancy and literacy values in the middle to lower range. Let's get a stat on the relationship.
+#### [**Breaking it down:**]{.underline}
 
-## Get the stats
+-   `lit_plot`: Uses the existing scatter plot already created and saved.
 
-We can also use a correlation to ask this question.
+-   `facet_wrap(~gender)`:
+
+    -   Splits the plot into two side-by-side charts (one for females, one for males) based on the `gender` column.
+
+    -   This helps us compare the relationship between literacy and life expectancy by gender.
+
+-   `geom_smooth()`:
+
+    -   Adds a smooth trend line through the points in each panel.
+
+    -   Helps visualize the overall pattern of the relationship for each gender.
+
+After running this code, you’ll get two separate plots showing how literacy and life expectancy relate for males and females, each with a trend line to highlight the pattern.
+
+From the plot, it looks like there’s a positive and consistent relationship between literacy and life expectancy for both males and females. It even seems that the relationship is stronger in countries with lower to mid-range values.
+
+## Calculating the stats
+
+Now let’s go beyond visuals and use a statistical measure to describe how strong this relationship is. A good place to start is the correlation coefficient, which gives us a number between -1 and 1 to describe how two variables are related.
+
+To understand how literacy rates and life expectancy are related, you can use a correlation test. This gives us a number that tells us how strong the relationship is and whether it's statistically significant.
+
+We will calculate the Pearson correlation between literacy rates and life expectancy, grouped by gender.
+
+Here, you will be running a correlation test separately for females and males using the `cor.test()` function. This test checks whether there is a linear relationship between literacy and life expectancy.
 
 ```{r}
 cor.test(countries_df$life_expectancy_at_birth_females,
@@ -260,20 +511,39 @@ cor.test(countries_df$life_expectancy_at_birth_males,
          countries_df$literacy_rates_world_bank_cia_world_factbook_and_other_sources)
 ```
 
-With using either `male` or `female` this relationship looks pretty strong!
+#### [**Breaking it down:**]{.underline}
 
-### Conclusion
+-   `cor.test(...)`: Performs a statistical test to calculate the correlation between the two variables.
+
+-   `countries_df`: This is the cleaned dataset with life expectancy and literacy data for each country.
+
+-   `life_expectancy_at_birth_females/males`: The female or male life expectancy values for each country.
+
+-   `literacy_rates_world_bank_cia_world_factbook_and_other_sources`: The literacy rate values for each country.
+
+This will give you the correlation coefficient, a p-value (which tells you if the correlation is statistically significant) and a confidence interval (indicating the range where the true correlation likely falls) for both males and females.
+
+## Conclusion
 
 Write up your thoughts about this data science project here and answer the following questions:
 
-- What did we find out about our questions?
-- How did we explore our questions?
-- What did our explorations show us?
-- What follow up data science questions arise for you regarding this candy dataset now that we've explored it some?
+-   What did you find out about your questions?
 
-## Print out session info
+-   How did you explore your questions?
 
-Session info is a good thing to print out at the end of your notebooks so that you (and other folks) referencing your notebooks know what software versions and libraries you used to run the notebook.
+-   What did your explorations show you?
+
+-   What follow-up data science questions come to mind now that you’ve spent some time exploring the dataset?
+
+## Printing out session info
+
+It’s good practice to include your session info at the end of your R Markdown notebook. This provides a snapshot of your R environment. It includes the version of R, the platform you’re running on, and the packages and libraries (including version numbers) that were loaded when the notebook was run.
+
+This is helpful for:
+
+-   Reproducibility (making sure others can run your code the same way)
+
+-   Understanding what software versions were used
 
 ```{r}
 sessionInfo()

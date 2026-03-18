@@ -1,54 +1,46 @@
 ---
 title: "First Data Science Project"
 author: "DataTrail Team"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
-# First Project
+# **Forming Questions**
 
-In DataTrail, we will use R Markdown files like this for our data science projects. In this first project, we will try to get comfortable with R Markdown files and go through example basic steps of a data science workflow.
+## **Project: Popular Halloween Candy**
+
+In our DataTrail data science projects we will be using R Markdown files which contain a combination of markdown (content with simple text formatting) and R code chunks that can be executed independently and interactively, with the output visible immediately beneath the input. In this first project, we will try to get comfortable with R Markdown files and go through example basic steps of a data science workflow.
+
+## Objectives for this project
 
 To complete this project you’ll need to do a few things within this file. As you go through the notebook, you will have further instruction on how to complete these objectives.
 
-1. Go through this notebook, reading along.
+1.  At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`. Be sure to replace it with your name in quotes.
 
-2. Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
+2.  Go through this notebook, reading along.
 
-3. Add a new code chunk to this project that prints out the phrase “I completed my first data science project”. See the very top of this notebook for an example of how to to do this.
+3.  Run each code chunk as you come across it by clicking the green play button in the right hand corner of that chunk. You should see the code chunks print out various output when you do this.
 
-4. At the very top of this file, put your own name in the author: place. Currently it says "DataTrail Team". Be sure to put your name in quotes.
+4.  Add a new code chunk to this project that prints out the phrase “I completed my first data science project”. See the Creating a New Code Chunk subsection.
 
-5. In the Conclusions section, write up responses to each of these questions posed here.
+5.  In the Conclusions section, write up responses to each of the questions.
 
-6. When you are satisfied with what you’ve written and added to this document you’ll need to save it. In the menu, go to File > Save. Now the nb.html output resulting file will have your new output saved to it.
+6.  When you are satisfied with what you’ve written and added to this document you’ll need to save it. In the menu, go to File \> Save. Now the nb.html output resulting file will have your new output saved to it.
 
-7. Open up the resulting first_project.nb.html file and click View in Web Browser. Does it look good to you? Did all the changes appear here as you expected.
+7.  Open up the resulting first_project.nb.html file and click View in Web Browser. Does it look good to you? Did all the changes appear here as you expected.
 
-8. Upload your Rmd and your nb.html to your assignment folder (this is something that will be dependent on what your instructors have told you – or if you are taking this on your own, just collect these projects in one spot, preferably a Google Drive)!
+8.  Upload your Rmd and your nb.html to your assignment folder (this is something that will be dependent on what your instructors have told you. If you are taking this on your own, just collect these projects in one spot, preferably a Google Drive).
 
-9. Pat yourself on the back for finishing up your first project!
+9.  Pat yourself on the back for finishing up your first project!
 
-## Forming our data science question
-
-We have defined data science as:
-
-> ".. asking a question that can be answered with data, collecting and cleaning the data, studying the data, creating models to help understand and answer the question, and sharing the answer to the question with other people."
-
-For this first project, our question is:
-
-> What's the most popular Halloween candy?
-
-One way to answer this question is to collect votes from people where they choose one candy over the other. We have a dataset that we will use to answer this question.
+# Before Beginning
 
 ## About R Markdowns
 
-Before we dive into this project and question, let's get acquainted with what this file is.
+Before we dive into this project and question, let's get acquainted with what this file is. We are using an R Notebook. An R Notebook has code chunks that can be executed independently and interactively, with the output visible immediately beneath the input. Notebooks are useful for data science projects because they allow us to have code, the results of the code, and our own notes all in one place.
 
-This is an R Markdown file. We will often work from R Markdowns for data science projects because they allow us to have code, the results of the code, and our own notes all in one place.
-
-To write code in an R Markdown, we need to put code in code chunks. You can create code chunks
-
-Code chunks look like this:
+In an R Notebook, notes are in white and code chunks are in grey boxes like the one below:
 
 ```{r}
 print("This is a code chunk")
@@ -56,21 +48,65 @@ print("This is a code chunk")
 
 When you run a code chunk, the results from the code show up below the code chunk it came from.
 
-You can click the green arrows at the top right of these code chunks to run an individual code chunk. OR you can click the "Run" button at the top of this whole window if you want to run all the code chunks.
+You can click the green play button at the top right of these code chunks to run an individual code chunk, or you can click the run button at the top of this whole window if you want to run specific code chunks.
 
-You can create a new code chunk by typing it by hand or by clicking the green +C button at the top of this window.
+### Creating a new code chunk
+
+You can create a new code chunk by typing it by hand or by clicking the green C button for insert new code chunk at the top of this window.
 
 ```{r}
 # Note that if I start a line with a '#' then what I right after it is ignored by R.
 ```
 
-All code needs to be within code chunks to be run. Anything outside of the code chunks is notes. You use markdown language to make these notes.
-You can read about markdown here: https://www.markdownguide.org/cheat-sheet/
-But we will also cover how to write markdown language later in the course.
+Code needs to be within the grey code chunks to be run. Anything outside of the code chunks is notes. We can see the difference between code and text (notes) as the code chunks are in grey and the text (notes) are in the white space.
 
-## Set up
+Tips for Using Code Chunks
 
-We are going to use this R package (we'll talk more about package in a later chapter).
+-   No nested chunks: Don’t place a chunk inside another, this will cause errors.
+
+-   Add spacing: Leave a blank line before and after each chunk to separate it from surrounding text.
+
+-   Close chunks properly: Every chunk must end with three backticks (\`\`\`). This signifies the end of code and begining of text. *You can only see these backticks when viewing this document as source rather than visual.*
+
+-   Only write code in chunks: Use \# for comments. Text that’s not valid R code must go outside the chunk.
+
+These common issues often cause rendering problems, keep chunks clean and clearly separated from text.
+
+## R Packages
+
+What is an R package?
+
+A package is a collection of functions, data, and code conveniently provided in a nice, complete format for you. See [Data Trail Section 22.0.1 What is an R package?](https://datatrail-jhu.github.io/DataTrail/r-packages.html). You can also take a look at the [Introduction to R Packages](http://faculty.washington.edu/kenrice/rintro/sess08.pdf), from Ken Rice and Timothy Thornton. For a really in depth look at R Packages (what they are, how to develop them), check out Hadley Wickham’s book from O’Reilly, [“R Packages”](http://r-pkgs.had.co.nz/).
+
+In the section [How do you install packages? (section 22.0.4)](https://datatrail-jhu.github.io/DataTrail/r-packages.html#how-do-you-install-packages) we will go over Installing from CRAN, Installing from Bioconductor, and Installing from GitHub. Fortunately the packages we will be using have already been installed! All we have to do is load the packages.
+
+-   [readr](https://readr.tidyverse.org/)
+
+-   [magrittr](https://www.rdocumentation.org/packages/magrittr/versions/2.0.3)
+
+-   [dplyr](https://dplyr.tidyverse.org)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/)
+
+## Setting up packages
+
+Before using any package in R, let’s first make sure it’s installed and ready to go!
+
+To check if a package is installed there are a few options:
+
+-   Use `installed.packages()`: This shows a list of all packages currently installed.
+
+-   Use `library()`: This lists all the packages you can load.
+
+-   Check the “Packages” tab in RStudio: It shows a list of installed packages.
+
+    -   Look for the tab usually on the bottom-right panel.
+
+    -   You can also search for a specific package using the search bar!
+
+To actually use a package in your code, you need to load it using the `library()` function. Loading the package makes its functions and tools available for use in your R session.
+
+We load the packages using the **`library()`** function including the name of the package in the parenthesis:
 
 ```{r}
 library(readr)
@@ -80,46 +116,88 @@ library(dplyr)
 library(broom)
 ```
 
-## Directories
+## Setting up directories
 
-In R Markdown files, your current directory (where you are doing your R code/commands) is always where your RMarkdown (Rmd) file is located.
+What Are Directories in R Markdown? A directory is just a folder on your computer or environment where files are stored. In R, we work with directories to:
 
-If I use this `dir()` function it will print out the files where my current directory is, which is the same as where this R Markdown is located.
+-   Load or save data files (.csv, .rds, etc.)
+
+-   Source scripts (.R files)
+
+-   Write output (plots, reports, etc.)
+
+In R Markdown files, your current directory (where you are currently creating your R code/commands) is always where your R Markdown (Rmd) `.Rmd` file is located.
+
+If you use the `dir()` function it will print out the the files and folders in the current working directory, which is the same as where this R Markdown is located.
 
 ```{r}
 dir()
 ```
 
-This code above tells us what files are here. And one of those is a folder called `data`.
+You should see results from the `dir()`line of code immediately below it. It tells us all of the files and folders that are in our current working directory. And that one of those is a folder called `data`.
+
+## Defining Data Science
+
+In section [1.1.2 What is data science?](https://datatrail-jhu.github.io/DataTrail/intro-welcome-to-datatrail.html) We define data science as:
+
+> ".. asking a question that can be answered with data, collecting and cleaning the data, studying the data, creating models to help understand and answer the question, and sharing the answer to the question with other people."
+
+## Forming our data science question
+
+The first part of the a data science process is forming a question.
+
+In this first project, we’ll use data to explore and answer the following question:
+
+> What's the most popular Halloween candy?
+
+To answer this question, we’ll need data. We’ll be working with a dataset called `candy-data.csv`, which contains information about people’s preferences for different Halloween candies. Each row in the dataset represents a response where an individual shares their opinion about a specific type of candy. By analyzing this data, we can determine which candies are the most popular.
 
 ## Getting the data
 
-We're going to read in a dataset about candy that is located in our `data` folder.
+To begin our analysis, we need to load the data. We'll be reading a CSV file named `candy-data.csv`, which is located in the `data` folder of our project. This file contains survey responses where people rated different types of Halloween candy.
+
+To load this dataset into R and assign it to an object called `candy_df`, we can run the following code chunk:
 
 ```{r}
 candy_df <- read_csv(file.path("data", "candy-data.csv"),
                      show_col_types = FALSE)
 ```
 
-## Explore the data
+This code reads the contents of the CSV file named`candy-data.csv` and stores it in a data frame object (specifically, a tibble) named `candy_df`.
 
-R Markdown will print out data in a table type format like this:
-This dataset is from https://fivethirtyeight.com/videos/the-ultimate-halloween-candy-power-ranking/ originally.
-We've done some cleaning for you on this dataset already, but we'll have you do cleaning of your own data later!
+#### [Breaking it down]{.underline}
+
+-   `candy_df <-`: Create a new object called `candy_df` and assign `<-` output to this object
+
+-   `read_csv(...)`: A function from the readr package (part of the tidyverse).
+
+    -   It reads a CSV file into a tibble (a modern version of a data frame in R).
+
+-   `file.path("data", "candy-data.csv")`: Safely constructs a file path.
+
+    -   Combines "data" and "candy-data.csv" into a proper path like "data/candy-data.csv".
+
+-   `show_col_types = FALSE`: This suppresses the message that normally shows column types when reading the CSV.
+
+## Exploring the data
+
+To explore the contents of our dataset, we can print the `candy_df` object to the screen. Because `candy_df` was imported using the `read_csv()` function from the [readr](https://readr.tidyverse.org/) package, the data can be printed in a tibble format. A tibble is a modern version of a data frame that provides a cleaner and more readable layout in R Markdown. We will learn more about tibbles in chapter 18 ( [18.1.3.2 What’s a tibble?](https://datatrail-jhu.github.io/DataTrail/data-frames-1.html)).
+
+To display the contents of the dataset lets use the name of the object in this case `candy_df` in the code chunk:
 
 ```{r}
 candy_df
 ```
 
+When this line is executed, R evaluates the `candy_df` object and prints it to the screen. By default, it shows the first 10 rows of data and as many columns as fit within the display area.
+
+***Note:** This dataset originates from [FiveThirtyEight](https://fivethirtyeight.com/videos/the-ultimate-halloween-candy-power-ranking/). Some light cleaning has already been performed to prepare it for analysis.*
+
 ## Plotting the data
 
-In R Markdowns, we can have plots print out here as well. Don't worry about the specifics of this code below, we will cover this later.
+We will be using the [ggplot2](https://ggplot2.tidyverse.org/) visualization to create a bar chart showing the most popular candies based on their win percentage (using the `winpercent` column). It is a measure of how often a candy was preferred over another in some sort of match-up or ranking system.
 
-For helping us answer our question:
-
-> What's the most popular Halloween candy?
-
-One way would be to plot the `winpercent` data. This variable says what percentage of the time the survey responders chose a candy over any other candy it was matched up against.
+In this exercise we want to create a bar chart ranking candies by how often they were preferred. The taller bars will indicate which candies are more popular. We will have it color-coded by whether the candy contains chocolate (based on true or false statements) and we will sort it from most to least popular (left to right).
 
 ```{r}
 ggplot(candy_df, aes(x = reorder(competitorname, -winpercent), y = winpercent, fill = chocolate)) +
@@ -131,32 +209,108 @@ ggplot(candy_df, aes(x = reorder(competitorname, -winpercent), y = winpercent, f
   ylab("Win percentage")
 ```
 
-This plot shows us that `Reeses Peanut Butter Cups` had the highest win percentage!
+### [Breaking it down]{.underline}
 
-Additionally, we have color coded this plot to show whether or not a candy listed is chocolate or not. This appears to make it look like the chocolate candies have higher `winpercent` and thus are more popular than the non-chocolate candies.
+-   `ggplot(candy_df, aes(...))`: Starts building the plot using the dataset `candy_df`.
 
-But how can we ask this question in data science? We can use stats!
+    -   `aes()`: defines the aesthetics: what goes on the x-axis, y-axis, and how to color the bars.
 
-## Get the stats
+-   `x = reorder(competitorname, -winpercent)`: Reorders the data so that the most popular candies (highest win percent) are on the left.
 
-We can ask if chocolate candies are more popular by using stats!
+    -   `competitorname`: refers to the name of each candy
 
-In the second part of this project our hypothesis is:
+    -   `reorder(...)`: orders the candies
 
-> Chocolate candies have a higher win percent than not chocolate candies
+    -   `-winpercent`: indicates to order from highest to lowest win percentage (due to the negative sign `-` before `winpercent`).
 
-To start to ask this question, we can take averages and print these out here:
+-   `y = winpercent`: The height of each bar represents the candy’s win percentage.
+
+-   `fill = chocolate`: Fills the bars with different colors based on whether the candy contains chocolate (TRUE or FALSE).
+
+    -   This allows us to visually compare chocolate vs. non-chocolate popularity.
+
+-   `geom_bar(stat = "identity")` Creates the actual bars.
+
+-   `stat = "identity`" tells [ggplot2](https://ggplot2.tidyverse.org/) to use the winpercent values directly (not counts).
+
+-   `ggtitle("Most popular candies")` Adds a title to the plot.
+
+-   `theme_bw()` Applies a clean black-and-white theme.
+
+-   `theme(axis.text.x = element_text(...))` Rotates the x-axis labels 90 degrees so the candy names are readable.
+
+    -   `vjust` and `hjust` adjust the alignment for clarity.
+
+-   `xlab("")` Removes the x-axis label (making it optional, since candy names are self-explanatory).
+
+-   `ylab("Win percentage")` Sets the y-axis label.
+
+### Interpreting the plot
+
+This plot shows that Reese's Peanut Butter Cups had the highest win percentage, making it the most popular candy in the dataset. We also color-coded the bars based on whether or not each candy contains chocolate. From the chart, it appears that chocolate candies tend to have higher win percentages overall. This suggests that, in general, chocolate candies are more popular than non-chocolate ones among survey respondents.
+
+## **Data manipulation**
+
+Next, we will use the [dplyr](https://dplyr.tidyverse.org/) package which was created for data wrangling (another way of saying data manipulation and cleaning). We will explore the 3 of the most commonly used data manipulation functions in this package which are: `group_by`, `summarize`, and `filter`. These functions help us transform and analyze data more easily.
+
+## Streamlining our workflow
+
+We will also be using the [magrittr](https://www.rdocumentation.org/packages/magrittr/versions/2.0.3) package, which gives us the pipe operator `%>%`.
+
+The pipe pipe operator `%>%` helps us write code that flows so we can chain steps together in a clear, readable way. Allowing us to run multiple sequential functions in one code chunk.
+
+Now that we have seen the data visualized in the bar plot let’s re-frame our initial research question (What's the most popular Halloween candy?) from a data science analysis point of view to form our next question:
+
+> Are chocolate candies more popular than non-chocolate candies?
+
+In the second part of this project, we’ll also want to test the hypothesis:
+
+> Chocolate candies have a higher win percentage than non-chocolate candies.
+
+To begin answering this question, we will group the candy dataset according to whether or not each candy contains chocolate, and then calculate the average win percentage for each group.
+
+We can calculate the average win percentage for each group (chocolate vs. non-chocolate) using the code chunk below:
 
 ```{r}
 # First we can just use averages to see what the differences are!
  candy_df %>%
   group_by(chocolate) %>%
-  summarize(mean(winpercent))
+  summarize(ave_winpercent=mean(winpercent))
 ```
 
-60 sounds bigger than 42? But is that different enough to answer our question?
+### [**Breaking** it down]{.underline}
 
-Another way to explore our hypothesis is use a formal statistical test (in this case, a t-test):
+-   `candy_df`: This is the data frame object containing information about various candies including their names, win percentages, and whether they contain chocolate.
+
+-   `%>%`: This is the pipe operator from the [magrittr](https://www.rdocumentation.org/packages/magrittr/versions/2.0.3) package
+
+    -   We could run each function separately, but that would be extra lines of code. Since we only want the final result, not the intermediate outputs we can use a pipe `%>%` which will run a sequence of functions on a single object. This takes the output of the first function as the input for the next function and so on. You can read it like “and then pipe.”
+
+-   `group_by(chocolate)`: This tells R to group the data into two categories:
+
+    -   Candies that contain chocolate (TRUE)
+
+    -   Candies that do not contain chocolate (FALSE)
+
+-   `summarize(ave_winpercent=mean(winpercent))`: For each group, this calculates the average (mean) of the `winpercent` column. It returns a small summary table with:
+
+    -   One row for chocolate = TRUE
+
+    -   One row for chocolate = FALSE
+
+    -   A column with the name `ave_winpercent` showing the average win percentage for each group
+
+*Hint: This is how you would read this code step by step: Start with the `candy_df` dataset and then pipe (`%>%`) the data into `group_by(chocolate)` (which splits the data into two groups based on whether or not a candy contains chocolate) and then pipe the grouped data into `summarize(mean(winpercent))`, which calculates the average win percentage for each group.*
+
+*Note: This code doesn’t assign the result to a new object yet. It is just printing the summarized data.*
+
+## Calculating the stats
+
+At first glance, based on percentages it seems obvious that 60% is bigger than 42% but is that difference statistically significant? In data science, we can use statistical methods to help answer questions like this.
+
+We think chocolate candies are more popular than non-chocolate ones but how can we be sure the difference isn’t just by chance?
+
+You can run a t-test. This is a common statistical method used to compare the averages (means) of two groups. In our case, we are comparing chocolate vs. non-chocolate candies. To figure out if the difference we see (60% vs. 42%) is actually statistically significant you can run the code chunk below:
 
 ```{r}
 chocolate <- filter(candy_df, chocolate) %>%
@@ -168,20 +322,68 @@ not_chocolate <- filter(candy_df, !chocolate) %>%
 t.test(chocolate, not_chocolate,
          alternative = "greater")
 ```
-This test tells us our p value (we'll talk about those more later) is suppppppeer small so that yeah, 60 is different enough from 42 given the amount of data we gave this test.
 
-### Conclusion
+### [Breaking it down]{.underline}
 
-Write up your thoughts about this data science project here and answer the following questions:
+-   `chocolate <-`: Create a new object called `chocolate` and assign `<-` output to this object
 
-- What did we find out about our questions? (what were our questions again?)
-- How did we explore our questions?
-- What did our explorations show us?
-- What follow up data science questions arise for you regarding this candy dataset now that we've explored it some?
+-   `filter(candy_df, chocolate)`: Filters the dataset to keep only rows where the `chocolate` column is TRUE (i.e., candies that contain chocolate).
 
-## Print out session info
+-   `%>%` : Passes the dataset into the next function (pull).
 
-Session info is a good thing to print out at the end of your notebooks so that you (and other folks) referencing your notebooks know what software versions and libraries you used to run the notebook.
+-   **`pull(winpercent)`**: Extracts (or "pulls out") just the **`winpercent`** column from those filtered rows.
+
+-   `not_chocolate <-` Create a new object called `not_chocolate` and assign `<-` output to this object
+
+-   `filter(candy_df, !chocolate)`: Filters the dataset to keep only rows where the `chocolate` column is FALSE `!` (i.e., candies that do not contain chocolate).
+
+-   `%>%`: Passes the dataset into the next function (pull).
+
+-   `pull(winpercent)`: Extracts (or "pulls out") just the **`winpercent`** column from those filtered rows.
+
+-   `t.test(chocolate, not_chocolate, alternative = "greater")`:
+
+    -   ``` t.test(``chocolate, not_chocolate ```: Runs a t-test to compare the average win percentages between chocolate and non-chocolate candies.
+
+    -   `alternative = "greater"` indicates that we are conducting a one-sided hypothesis test (one directional: Is the mean win percentage of chocolate candies greater than that of non-chocolate candies?)
+
+This code compares the win percentages of chocolate vs. non-chocolate candies. The `alternative = "greater"` argument indicates that our hypothesis is directional. We’re specifically testing whether chocolate candies have a greater win percentage.
+
+The result includes a p-value, the p-value tells us the probability that the difference in win percentages is just random. We will learn more about this later, for now, what we need to know is:
+
+A small p-value (typically less than 0.05) means the difference is probably real.
+
+In our case he p-value is very small **(**p = ![](data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)0.0000000002082 which is much smaller than 0.05!), so we can confidently say: Chocolate candies really are more popular than non-chocolate candies in this dataset. This means the difference between chocolate (60%) and non-chocolate (42%) is statistically significant, not due to random chance.
+
+## Conclusion
+
+Let’s reflect on what we’ve done in this project and what we’ve learned. Write your thoughts about this data science project here and answer the following questions:
+
+-   What question were we trying to answer?
+
+-   How did we explore our questions?
+
+-   What did we find?
+
+-   What follow-up data science questions come to mind now that you’ve spent some time exploring the dataset?
+
+    Do price or sugar content influence a candy’s popularity?
+
+    Are some non-chocolate candies still very popular?
+
+    What role does branding or nostalgia play in candy preference?
+
+## Printing out session info
+
+It’s good practice to include your session info at the end of your R Markdown notebook. This provides a snapshot of your R environment. It includes the version of R, the platform you’re running on, and the packages and libraries (including version numbers) that were loaded when the notebook was run.
+
+This is helpful for:
+
+-   Reproducibility (making sure others can run your code the same way)
+
+-   Understanding what software versions were used
+
+You can print the session info by running the `sessionInfo()` code chunk:
 
 ```{r}
 sessionInfo()

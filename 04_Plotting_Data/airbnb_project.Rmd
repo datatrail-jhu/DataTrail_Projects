@@ -1,43 +1,68 @@
 ---
 title: "Data Visualization Project"
-author: "Data Treal Team"
-output: html_document
+author: "Data Trails Team"
+output:
+  html_document:
+    df_print: paged
 ---
 
-# Data Visualization Project
+# **Plotting Data**
+
+## Project: Airbnb Data Visualization Project
+
+In this project, you’ll learn how to prepare and visualize Airbnb data to explore potential relationships between variables.
+
+The dataset combines information from various global sources, including literacy rates and life expectancy for both males and females. You’ll use tools from the tidyverse to load and clean the data, and then create a variety of plots to investigate patterns, trends, and relationships within the dataset.
 
 ## Objectives for this project
 
 To complete this project you’ll need to do a few things within this file. As you go through the notebook, you will have further instruction on how to complete these objectives.
 
-1. Go through this notebook, reading along.
+1.  At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`, replace it with your name in the quotes.
 
-2. Fill in empty or incomplete code chunks when prompted to do so.
+2.  Read through this notebook carefully, following along with each section.
 
-3. Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
+3.  Fill in the empty or incomplete code chunks when prompted.
 
-4. At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`. Be sure to put your name in quotes.
+4.  Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
 
-5. In the `Conclusions` section, write up responses to each of these questions posed here.
+5.  In the Conclusions section at the end, write thoughtful responses to each of the questions provided.
 
-6. When you are satisfied with what you've written and added to this document you'll need to save it. In the menu, go to `File` > `Save`. Now the `nb.html` output resulting file will have your new output saved to it.
+6.  When done with this project notebook save the file by going to File \> Save in the RStudio menu. This will update the output `.nb.html` file to reflect your changes.
 
-7. Open up the resulting `airbnb_project.nb.html` file and click `View in Web Browser`. Does it look good to you? Did all the changes appear here as you expected.
+7.  Open up the resulting `airbnb_project.nb.html` file and click `View in Web Browser`. Check to make sure everything looks good and your changes are showing up as expected.
 
-8. Upload your `Rmd` and your `nb.html` files to your assignment folder (this is something that will be dependent on what your instructors have told you -- or if you are taking this on your own, just collect these projects in one spot, preferably a Google Drive)!
+8.  Upload your `Rmd` and your `nb.html` to your assignment folder (this is something that will be dependent on what your instructors have told you – or if you are taking this on your own, just collect these projects in one place, preferably a Google Drive).
 
-7. Pat yourself on the back for finishing this project!
+## Goal
 
-## The goal of this analysis
+\<Write here what the goal of this analysis is. What question are you trying to answer?\>
 
-<Write here what the goal of this analysis is. What question are we trying to answer?>
+Example response: The goal of this analysis is to use the data in `airbnb_df` to answer the question about what factors influence the price of an Airbnb listing.
 
-## Set up
+## R Packages
 
-Let's load these packages for use. Add or subtract from this list as you see fit.
+Fortunately the packages you will be using have already been installed! All you have to do is load the packages.
+
+These are the R packages you are going to use:
+
+-   [janitor](http://rdocumentation.org/packages/janitor/versions/2.2.1)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/)
+
+-   [dplyr](https://dplyr.tidyverse.org)
+
+-   [ggthemes](https://r-graph-gallery.com/package/ggthemes.html)
+
+-   [readr](https://readr.tidyverse.org/)
+
+## Setting up packages
+
+Before using any package in R, first make sure it’s installed and ready to go! Then load the packages using the **`library()`** function including the name of the package in the parenthesis:
+
+*Note: You can add packages as needed or not use/remove the ones not needed as you see fit.*
 
 ```{r setup, include=FALSE}
-## load packages
 library(janitor)
 library(ggplot2)
 library(dplyr)
@@ -45,10 +70,9 @@ library(ggthemes)
 library(readr)
 ```
 
+## Setting up directories
 
-## Set up directories
-
-Here we are going to make a `data` directory if it doesn't already exist.
+Here, you making sure there’s a folder called `"data"` in our project. If it doesn’t already exist, it will be created it using the code below:
 
 ```{r}
 if (!dir.exists("data")) {
@@ -56,138 +80,238 @@ if (!dir.exists("data")) {
 }
 ```
 
-## Get the data
+#### [**Breaking it down**]{.underline}
 
-The data we'll be using for this part of the project are about Airbnbs and can be downloaded from here: https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata
+-   `dir.exists("data")`:Checks whether a folder named `"data"` already exists in your project directory.
 
-First, we'll read the data in from our `data/raw` directory. Use the `read_csv` function to do this. Call this new data frame `airbnb_df`.
+-   `!dir.exists("data")`: The `!` means “not”, so this condition checks: “Does the folder not exist?”
 
-```{r}
-### Your code here
-```
+-   `if (...) { ... }`: This is a basic if-statement. It says: If the folder doesn’t exist, then do what’s inside the `{}`.
 
-Use this chunk to do some exploring of this dataset to get an idea of what kind of information is here.
+-   `dir.create("data")`: If the condition is true, this line creates a new folder named “data”.
 
-```{r, solution = TRUE}
-### Your code here
-```
+## **Getting the data**
 
-### Clean the data
+For this project you will be using a New York focused Airbnb dataset that contains listing details such as location, pricing, and review information.
 
-Use the `janitor::clean_names` function to clean up some of these column names.
+Link: [Kaggle Arbnb open data](https://www.kaggle.com/datasets/arianazmoudeh/airbnbopendata){.uri}
 
-```{r, solution = TRUE}
-### Your code here
-```
+The data has already been downloaded and saved in the `data/raw` folder of your project.
 
-### Fix `neighbourhood_group` variable
+You will need to read the data in from the `data/raw` directory. Use the `readr::read_csv()` function to read the data into R and name the new data frame `airbnb_df`.
 
-Take a look at the `neighbourhood_group` variable. Try to summarize how many different neighborhood groups there are using the `summary()` function.
+*Hint: If you need a refresher on using* `read_csv()`*you can revisit chapter 24 section [24.0.4 Reading files into Posit Cloud](https://datatrail-jhu.github.io/DataTrail/dataset-file-types.html).*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-You will find that this variable is a character, so we will need to check it as a factor to get meaningful information about the groups here. Thus run the `summary` function on a factor version of the `neighborhood_group` data, but don't yet change the variable to be a factor.
+## Exploring the data
+
+After reading in the dataset `airbnb_df` and before diving into analysis, it’s helpful to see what variables it includes. In order to get familiar with the structure of your data you can start by looking at the names of the columns (also known as variables) in your dataset.
+
+Use a previously introduced function to list the column names, and another to view the dimensions of the data frame.
+
+*Hint: You can revisit chapter 18 section [18.1.1 Subsetting data frames](https://datatrail-jhu.github.io/DataTrail/data-frames-1.html) and chapter 19 sections [9.0.3 How big is this object?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html) and [19.0.4 Are there named features of this object?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html)*
+
+Let's see what variables `airbnb_df` includes and its dimensions. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-You'll notice there's some typos here `brookln` and `manhatan`. Fix these typos in this dataset by whatever method you find most intuitive. After you have fixed the typos, make sure that you coerce `neighbourhood_group` as a factor.
+## Cleaning the data
+
+### Cleaning column names
+
+Now you’re going to clean up the column names using the clean_names() function from the janitor package. This function is especially helpful when working with messy or inconsistent column names, such as those that contain spaces, capital letters, or special characters.
+
+The janitor package is designed to integrate smoothly with the tidyverse, working particularly well alongside packages like dplyr, readr, and tidyr. This makes it an excellent tool for streamlining data cleaning tasks.
+
+Hint: For a refresher on how the janitor package works, see [Chapter 32, Section 32.0.3](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html) of the course material.
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-Re-run `summary()` on the `neighbourhood_group` to see if your code successfully fixed these misspellings.
+### Fix neighbourhood_group variable
+
+Let's take a closer look at the `neighbourhood_group` variable. Try to summarize how many different neighborhood groups there are using the `summary()` function.
+
+*Hint: You can revisit chapter 19 section [19.0.5 What does this object look like?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html#) to revisit how the* `summary()` function is used.
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
+```
+
+You’ll see that the `neighbourhood_group` column is stored as a character variable. In order to better understand how many unique groups or categories there are, it's helpful to treat it as a factor.
+
+*Note: Remember that in chapter 19 section [19.0.5 What does this object look like?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html#) we covered that categorical data are called factors in R.*
+
+For now, just run the `summary()` function with the help of the `as.factor` function on the `neighbourhood_group` to explore the categories.
+
+Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
+
+You'll notice there are some typos here such as `brookln` and `manhatan`. Fix these typos in this dataset by whatever method you find most intuitive. After you have fixed the typos, make sure that you convert `neighbourhood_group` to a factor.
+
+*Hint: Think about how you might replace specific values in a column. You might want to use the `mutate()` function from the [dplyr](https://dplyr.tidyverse.org/) package* *along with something that helps you set conditions (for example `case_when()`*). Another helpful function `as.factor` will also be needed to convert the columns to factor format. You can revisit chapter 16 section [16.0.8 Factor](https://datatrail-jhu.github.io/DataTrail/objects-in-r.html) for what factors are, and review [case_when() usage](https://dplyr.tidyverse.org/reference/case_when.html).
+
+*Hint: Also remember that you can use the pipe operator that we covered in chapter 32 section [32.0.5 The Pipe Operator](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html) in order to string a number of different functions together in a particular order.*
+
+Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
+
+Re-run `summary()` on the `neighbourhood_group` to see if your code successfully fixed the typos.
+
+Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
 ```
 
 ### Fix numeric data
 
-The `service_fee` and `price` columns are really numeric data but are being treated as characters because there are `$` and `,` included.
+The `service_fee` and `price` columns are numeric data but are being treated as characters because symbols such as `$` and `,` are currently included. You need to convert the variables to numeric.
 
-We'll need to get rid of these. **Hint** use this kind of code:
-`stringr::str_remove(service_fee, "\\$|,")` within a mutate to get rid of the dollar signs. After you get rid of the dollar signs from both `service_fee` and `price`, coerce both of these variables to be numeric.
+*Hint: Review chapter 34 section [34.0.2 stringr](https://datatrail-jhu.github.io/DataTrail/working-with-strings.html). You can use functions found in the [stringr package](https://stringr.tidyverse.org/) from tidyverse such as: `str_remove` within a mutate function to get rid of the dollar signs and commas. After you get rid of the dollar signs from both `service_fee` and `price`, convert both of these variables to be numeric.*
 
-```{r, solution = TRUE}
-### Your code here
-```
-
-Use summary to see if `price` and `service_fee` are now appropriately numeric data.
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
+```
+
+Use the `summary` function again to check whether `price` and `service_fee` are now correctly recognized as numeric data.
+
+Write your code in the code chunks below:
+
+```{r, solution = TRUE}
+
 ```
 
 ```{r, solution = TRUE}
-### Your code here
-```
-
-## Plot the data
-
-Let's make a series of plots that explore how the price of an airbnb may be related to the other variables in this set.
-
-To refresh your memory, a basic ggplot code looks like this:
 
 ```
+
+## Plotting the data
+
+A good data plot highlights patterns, trends, and relationships, making it easier to interpret the data and draw clear conclusions.
+
+Note: *You can revisit chapter 40 section* [40.0.1 Tips for Making Good Plots](https://datatrail-jhu.github.io/DataTrail/good-plots.html).
+
+To investigate what influences Airbnb prices in the `airbnb_df` dataset, you’ll create a series of plots that examine how price relates to other variables. These visualizations will help you identify patterns and relationships in the data, ultimately supporting your analysis of the key factors affecting price.
+
+To refresh your memory, code for a basic ggplot looks like this:
+
+```         
 DATA_FRAME %>%
   ggplot(aes(VARIABLE, VARIABLE, color = OPTIONAL_VARIABLE)) +
   geom_PLOT_TYPE()
 ```
 
-We recommend keeping the ggplot2 cheatsheet handy while you are going through this project:
-https://www.rstudio.com/resources/cheatsheets/
+Note: We recommend keeping the [ggplot2 cheatsheet](https://rstudio.github.io/cheatsheets/html/data-visualization.html) handy while you are going through this project.
+
+### Bar plot
+
+Visualizing variables is a powerful and quick way to explore what’s in a dataset. Plots can help you spot patterns, unusual values, or potential relationships between variables.
+
+Before diving into price, let’s start by creating a bar plot to explore how different types of Airbnb rooms are distributed across neighborhood groups. This will give us a better understanding of our variables overall. The plot should show the proportion of each room type (e.g., entire home, private room) within each neighborhood group.
+
+*Note: Make sure your axis labels are clearly readable. You can revisit chapter 42 section [42.0.3 Themes](https://datatrail-jhu.github.io/DataTrail/customization-in-ggplot2.html) for guidance on how to change the aesthetic of your graph. You may need to rotate the text using `theme()` options for your axis.*
+
+Write your code in the code chunk below:
+
+```{r, solution = TRUE}
+
+```
 
 ### Scatter plot
 
-Now make a scatter plot that explores if `price` is related to one of the other numeric variables in the dataset.
+Create a scatter plot to explore which numeric variable in the dataset apears to show a clear relationship with `price`. As part of data exploration process, test several variables to see what stands out visually. You may need to try a few different variables before you find the one that may be best visualized with price in a scatter plot.
+
+*Hint: Remember that we learned that scatter plots are helpful when you have numerical values for two different pieces of information and you want to understand the relationship between those pieces of information. You can revisit chapter 39 section [39.1.3.2 Scatterplot](https://datatrail-jhu.github.io/DataTrail/plotting-data.html#scatterplot).*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+#new plot idea
+
 ```
 
-### Violin plot
+### Boxplot
 
-Make a violin plot for the price distribution of different neighborhood groups.
+Now create a boxplot to helps us compare how Airbnb prices vary across different neighborhood groups. Boxplots show the range, median, and spread of prices for each area, making it easier to spot differences and potential outliers.
 
-```{r, solution = TRUE}
-### Your code here
-```
+*Hint: Missing values should be filtered before plotting, this is covered in chapter 54 section [54.0.1.2 Missing Values](https://datatrail-jhu.github.io/DataTrail/descriptive-analysis.html). You can use the pipe operator that we covered in chapter 32 section [32.0.5 The Pipe Operator](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html) in order to string functions together to go straight from data manipulation to creating the plot.*
 
-### Barplot
+*Note: The neighborhood names on the x-axis are quite long and may overlap, making them hard to read. To fix this, you can tilt the axis labels using the `angle` and `vjust` arguments inside `theme()`. This helps improve readability and makes your plot easier to interpret.*
 
-Now make a plot that explores if there's a particular `room_type` that has a higher price than others. You may choose to summarize the `price` by the `room_type`.  Hint: you may need to `group_by` a variable.    
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+#new plot idea
+
 ```
 
 ### Your choice plot!
 
-Make one more plot that is completely your choice about what variables you'd like to see the relationships of.
+Create a plot of your choice using any variables in the `airbnb_df` dataset you'd like to see the relationships of. This is a great opportunity to apply what you’ve learned so far about selecting data, using `ggplot2`, and customizing your plots.
 
-See http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html for inspiration and ideas.
+*Hint: You can visit [Chapter 39 Plotting Data](https://datatrail-jhu.github.io/DataTrail/plotting-data.html#scatterplot)* *and section [39.1.3 Types of Plots](https://datatrail-jhu.github.io/DataTrail/plotting-data.html#scatterplot) to see the different types of plots you can use for this plot of yoour choise. You can also see [Top 50 ggplot2 Visualizations - The Master List (With Full R Code)](http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html){.uri} for inspiration and ideas.*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
-### Your code here
+
 ```
 
-### Conclusion
+## Conclusion
 
 Write up your thoughts about this data science project here and answer the following questions:
 
-- What did we find out about our questions?
-- How did we explore our questions?
-- What did our explorations show us?
-- What follow up data science questions arise for you regarding this candy dataset now that we've explored it some?
+-   What did you find out about your questions?
+    -   The main question was: What factors influence the price of an Airbnb listing?
 
-## Print out session info
+        We found that location (neighbourhood group), room type, and review activity all appear to have a relationship with listing price.
+-   How did you explore your questions?
+    -   To explore this question, we followed a structured data science workflow:
+        -   Loaded and cleaned the data: We imported the dataset and used the `janitor::clean_names()` function to clean up the column names.
+        -   We also corrected typos in categorical variables and removed unwanted symbols (like \$ and ,) from numeric fields like price and service_fee.
+        -   Explored the structure of the data: We used functions like `colnames()`, `dim()`, and `summary()` to understand what kind of data we were working with.
+        -   Transformed variables by correcting spelling errors in neighborhood groups, converted variables into the right formats (e.g., factors and numeric characters), and made sure the data was tidy and ready for analysis.
+        -   Created visualizations: We used ggplot2 to create several types of plots:
+            -   scatter plot showing the relationship between price and review activity.
+            -   box plot to examine the price distribution across different neighborhoods.
+            -   bar plot to compare average prices across room types.
+            -   and a plot of choice A density plot faceted by neighborhood group to compare price distributions visually.
+    -   Each step helped us see possible patterns and relationships in the data that affect Airbnb pricing.
+-   What did your explorations show you?
+    -   The graphs we plotted helped us understand how location, type of space, and user engagement might influence how much a listing costs.
+-   What follow-up data science questions come to mind now that you’ve spent some time exploring the dataset?
+    -   How does listing availability (number of days available per year) impact pricing?
+    -   Do listings with higher review scores tend to cost more?
+    -   How have prices changed over time? Is there a seasonal or yearly trend?
 
-Session info is a good thing to print out at the end of your notebooks so that you (and other folks) referencing your notebooks know what software versions and libraries you used to run the notebook.
+## Printing out session info
+
+It’s good practice to include your session info at the end of your R Markdown notebook. This provides a snapshot of your R environment. It includes the version of R, the platform you’re running on, and the packages and libraries (including version numbers) that were loaded when the notebook was run.
+
+This is helpful for:
+
+-   Reproducibility (making sure others can run your code the same way)
+
+-   Understanding what software versions were used
 
 ```{r}
 sessionInfo()

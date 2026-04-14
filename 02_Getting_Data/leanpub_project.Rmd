@@ -2,7 +2,7 @@
 title: "Getting Data Project"
 author: "DataTrail Team"
 output:
-  html_document:
+  html_notebook:
     df_print: paged
 ---
 

@@ -1,54 +1,97 @@
 ---
 title: "Getting Data Project"
 author: "DataTrail Team"
-output: html_notebook
+output:
+  html_notebook:
+    df_print: paged
 ---
 
-# Getting Data Project
+# Getting Data
+
+## Project: Leanpub Data
+
+In this project, you will walk through the process of getting data into R so you can begin exploring and analyzing it.
+
+The dataset you created (in Chapter 27 Google Documents in section [27.1.4 Collecting data](https://datatrail-jhu.github.io/DataTrail/google-documents.html#collecting-data)) contains information about books published on Leanpub. It contains information including how many readers they have and the prices suggested by the authors. Once the data is loaded, you will explore its structure, check for any issues, and get it ready for visualizations and statistical analysis. This project is an essential part of learning the data science workflow: from data collection to cleaning, and preparing it for meaningful exploration.
 
 ## Objectives for this project
 
-To complete this project you’ll need to do a few things within this file. As you go through the notebook, you will have further instruction on how to complete these objectives.
+To complete this project, you’ll need to work through a few key steps within this file. As you move through the notebook, you’ll find instructions in each section to help you complete the project step by step.
 
-Be sure [you have followed the steps described in the previous chapter](https://datatrail-jhu.github.io/DataTrail/google-documents.html) and have your Googlesheet with Leanpub data prepared and ready.
+1.  To complete this project, you’ll need to work through a few key steps within this file. As you move through the notebook, you’ll find instructions in each section to help you complete the project step by step.
 
-1. Go through this notebook, reading along.
+    1.  Before you begin, make sure you’ve completed the steps in the previous chapter and have your Google Sheet with Leanpub data ready to go as it was explained in Chapter 27 Google Documents in section [27.1.4 Collecting data](https://datatrail-jhu.github.io/DataTrail/google-documents.html#collecting-data).
 
-2. Fill in empty or incomplete code chunks when prompted to do so.
+    2.  At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`. Be sure to replace it with your name in quotes.
 
-3. Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
+    3.  Read through this notebook carefully, following along with each section.
 
-4. At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`. Be sure to put your name in quotes.
+    4.  Fill in the empty or incomplete code chunks when prompted.
 
-5. In the `Conclusions` section, write up responses to each of these questions posed here.
+    5.  Run each code chunk as you come across it by clicking the tiny green triangles at the right of each code chunk. You should see the code chunks print out various output when you do this.
 
-6. When you are satisfied with what you've written and added to this document you'll need to save it. In the menu, go to `File` > `Save`. Now the `nb.html` output resulting file will have your new output saved to it.
+    6.  In the Conclusions section at the end, write thoughtful responses to each of the questions provided.
 
-7. Open up the resulting `leanpub_project.nb.html` file and click `View in Web Browser`. Does it look good to you? Did all the changes appear here as you expected.
+    7.  When done with this project notebook save the file by going to File \> Save in the RStudio menu. This will update the output `.nb.html` file to reflect your changes.
 
-8. Upload your `Rmd` and your `nb.html` to your assignment folder (this is something that will be dependent on what your instructors have told you -- or if you are taking this on your own, just collect these projects in one spot, preferably a Google Drive)!
+    8.  Open your **`leanpub_project.nb.html`** file and click “View in Web Browser”. Check to make sure everything looks good and your changes are showing up as expected.
 
-7. Pat yourself on the back for finishing this project!
+    9.  Upload your Rmd and your nb.html to your assignment folder (this is something that will be dependent on what your instructors have told you – or if you are taking this on your own, just collect these projects in one place, preferably a Google Drive)!
 
-## The goal of this analysis
+## Goal
 
-<Write here what the goal of this analysis is. What question are we trying to answer?>
+The goal of this analysis is:
 
-## Set up
+\<Write here what the goal of this analysis is. What question are you trying to answer?\>
 
-We are going to use this R package (we'll talk more about package in a later chapter).
+## R Packages
+
+What is an R package was covered in the previous project notebook but you can also revisit [Data Trail Section 22.0.1 What is an R package?](https://datatrail-jhu.github.io/DataTrail/r-packages.html).
+
+In chapter 22 in the section [How do you install packages? (section 22.0.4)](https://datatrail-jhu.github.io/DataTrail/r-packages.html#how-do-you-install-packages) we also learned about installing from CRAN, installing from Bioconductor, and installing from GitHub.
+
+Fortunately the packages you will be using have already been installed! All you need to do is load the packages.
+
+These are the R packages you are going to use:
+
+-   [readr](https://readr.tidyverse.org/)
+
+-   [googlesheets4](https://googlesheets4.tidyverse.org/)
+
+-   [dplyr](https://dplyr.tidyverse.org)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/)
+
+## Setting up packages
+
+Before using any package in R, let’s first make sure it’s installed and ready to go!
+
+To check if a package is installed there are a few options:
+
+-   Use `installed.packages()`: This shows a list of all packages currently installed.
+
+-   Use `library()`: This lists all the packages you can load.
+
+-   Check the “Packages” tab in RStudio: It shows a list of installed packages.
+
+    -   This tab is usually on the bottom right panel.
+
+    -   You can also search for a specific package using the search bar!
+
+To actually use a particular function found within a package, you need to load it using the `library()` function. Loading the package makes its functions available for use in your R session.
+
+You will load the packages using the **`library()`** function including the name of the package in the parenthesis:
 
 ```{r}
 library(readr)
-library(magrittr)
 library(googlesheets4)
 library(dplyr)
 library(ggplot2)
 ```
 
-## Set up directories
+## Setting up directories
 
-Here we are going to make a data directory if it doesn't already exist.
+Here, you making sure there’s a folder called `"data"` in our project. If it doesn’t already exist, it will be created it using the code below:
 
 ```{r}
 if (!dir.exists("data")) {
@@ -56,18 +99,29 @@ if (!dir.exists("data")) {
 }
 ```
 
+#### [Breaking it down]{.underline}
+
+-   `dir.exists("data")`: This checks whether a folder named `"data"` already exists in your project directory.
+
+-   `!dir.exists("data")`: The `!` means "not", so this condition checks: “Does the folder not exist?”
+
+-   `if (...) { ... }`: This is a basic if-statement. It says: If the folder doesn’t exist, then do what's inside the `{}`.
+
+-   `dir.create("data")`: This line creates a new folder named "data".
+
 ## Getting the data
 
-Here we are reading in a Google spreadsheet with information about leanpub books and their prices. We will read this data in using the googlesheets4 R package.
+Here you are reading in a Google spreadsheet with information about Leanpub books and their prices. You will read this data in using the [googlesheets4](https://googlesheets4.tidyverse.org/) R package.
 
-Assign the URL of your leanpub googlesheet the name `link` and make sure to put quotes around it. Copy and paste it from GoogleSheets exactly.
+First, create an R object with the name `link`. Then assign (`<-`) the URL of your Leanpub GoogleSheet by copying and pasting the URL of your Leanpub from GoogleSheets. Instructions for creating and coping the sharable link can be found in [27.1.4 Collecting data](https://datatrail-jhu.github.io/DataTrail/google-documents.html#collecting-data) section. Make sure to put quotes around the URL.
 
 ```{r, solution = TRUE}
-# Paste your URL to your googlesheet below! Make sure to put quotes around it
 ### Your code here
 ```
 
-We'll read in the data using the code below. You will need to follow the prompt to authorize the data to be read in using your Google login credentials.
+Next, to read in the data using the code below, you will need to follow the prompt to authorize the data to be read in using your Google login credentials.
+
+*Note: if the console isn't expanded, you may need to pull up the console sometimes it doesn't pop up automatically.* *After running the code chunk there will be a question about authorizing access. Select option 1: Yes*
 
 ```{r}
 if (interactive()) {
@@ -81,48 +135,152 @@ if (interactive()) {
 }
 ```
 
-So we have a snapshot of what this data look like at the time that we ran this analysis (and for easier sharing purposes), let's use the `readr::write_csv()` function to write this to a file.
+#### [Breaking it down]{.underline}
 
-Save this file to the `data` directory that we created. And name the file `leanpub_data.csv`. If you don't remember how to use the `readr::write_csv()` function, recall you can look it up using `?readr::write_csv`.
+-   `if (interactive())`:
+
+    -   `interactive()`:Checks if you’re in an interactive R session.
+
+    -   Returns TRUE if you’re working in something like RStudio or the R console.
+
+    -   If TRUE, the block inside runs; otherwise, the else block runs.
+
+-   `leanpub_df <- read_sheet(link, col_types = "c") read_sheet()`:
+
+    -   `leanpub_df <-`: Creates an object called `leanpub_df` and assigns `<-` output to it.
+
+    -   `read_sheet`: This from the googlesheets4 package.
+
+    -   `link`: Is expected to be a Google Sheets URL or ID.
+
+    -   `col_types = "c"`: Tells the function to read all columns as characters (i.e., “c” = character).
+
+-   `} else {`: If the session is not interactive, this block is used.
+
+-   `if (file.exists(file.path("data", "leanpub_data.csv"))) {`:
+
+    -   Checks if a local CSV file exists at the path "`data/leanpub_data.csv`".
+
+    -   `file.path()`: Is used to construct the path in a platform-independent way.
+
+-   `leanpub_df <- readr::read_csv(file.path("data", "leanpub_data.csv"))`:
+
+    -   If the file exists, this reads the CSV into the same `leanpub_df` data frame using the readr package.
+
+    -   This is a fallback method for loading data when Google Sheets access isn’t available.
+
+### Creating a data file
+
+After successfully creating an R object from googlesheet, let’s save it to a file. This is helpful for sharing your work or picking up right where you left off next time.
+
+Use the `readr::write_csv()` function to save the R data object as a CSV file. Be sure to write it into the `data` directory and name the file: **`"leanpub_data.csv"`**.
+
+*Hint:If you don't remember how to use the `readr::write_csv()` function, you can look it up using `?readr::write_csv`.* You can also revisit [DataTrail Section 24.0.5: Writing CSV files into Posit Cloud](https://datatrail-jhu.github.io/DataTrail/dataset-file-types.html).
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-## Explore the data
+## Exploring the data
 
-Use some of the functions you learned to investigate your `leanpub_df`. How many dimensions is it?
+Now that you've created an R object of your dataset (`leanpub_df`), take a closer look at what kind of data you're working with!
+
+This step is important because it helps you understand the structure of the data before moving forward with any analysis. Choose one of the basic data exploration functions to investigate the `leanpub_df`.
+
+For instance, you may be interested in the data dimensions.
+
+*Hint: It may be helpful to revisit section [19.0.3 How big is this object?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html)*
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-What kind of class object is it?
+Knowing the structure of the data may also be helpful.
+
+*Hint: It may be helpful to revisit section* [16.0.11 Determining the class and shape of an object](https://datatrail-jhu.github.io/DataTrail/objects-in-r.html).
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-## Cleaning the data
+## Checking the data
 
-For the upcoming code, we will need to make sure that we have columns named *exactly* `title`, `readers`, `suggested` and `minimum`.
+Before you move on, you need to make sure your dataset has the right column names in exactly in this order: `title`, `readers`, `suggested`, and `minimum`.
+
+These column names are important because the next steps in our analysis rely on them being named correctly.
+
+Run the following code chunk to check if the column names are correct:
 
 ```{r}
 # If all four of our required columns are found, then this will print out TRUE
 all(c('title', 'readers', 'suggested', 'minimum') %in% colnames(leanpub_df))
 ```
 
-If the above prints out false, you may want to return to your Googlesheets, rename the columns accordingly and start from the top of this notebook again.
+#### [Breaking it down]{.underline}
 
-This code will clean your data for you.
+-   `all(…)`: all() returns TRUE only if every value in the logical vector is TRUE.
+
+-   `c('title', 'readers', 'suggested', 'minimum')`: Creates a character vector of the column names you expect.
+
+-   `colnames(leanpub_df)` : Returns a character vector of column names in the data frame leanpub_df.
+
+-   `%in% colnames(leanpub_df)`: Checks element-wise whether each of the specified names exists in the data frame’s column names, and Returns a logical vector of true or false for each value.
+
+If it prints **`TRUE`**, great! You're good to go. If it prints **`FALSE`**, that means one or more of the column names don't match exactly.
+
+Note: *What to do if it says FALSE: Go back to your Google Sheet, check the column names, and make sure they are spelled exactly like below and that they are in the correct order:*
+
+-   `title`
+
+-   `readers`
+
+-   `suggested`
+
+-   `minimum`
+
+*Once they are correct, start from the getting the data section and run each code chunk again.*
+
+## Cleaning the data
+
+You need to make sure that certain columns in your data (such as `readers`, `suggested`, and `minimum`) are being treated as numeric objects (see chapter 16 [section 16.0.6 Numeric](https://datatrail-jhu.github.io/DataTrail/objects-in-r.html)) and not as text.
+
+*Note: Different data types have slightly different behaviors, so knowing their class is useful. You can revisit chapter 16 section [16.0.3.1 Classes of objects](https://datatrail-jhu.github.io/DataTrail/objects-in-r.html) and [16.0.3.2 Why are classes important?](https://datatrail-jhu.github.io/DataTrail/objects-in-r.html) There are five common classes:*
+
+-   *Character - e.g. `"sharon""marcus"`*
+
+-   *Integer - e.g. `1`, `4` (whole numbers)*
+
+-   *Numeric - e.g. `1.2`, `3.4`, `4`*
+
+-   *Logical - only two options: `TRUE` or `FALSE`.*
+
+-   *Factor - `red`, `red`, `blue`, `yellow` (categories that could be repeated).*
+
+This is important because you will want to do calculate some basic summary statistics with these values, like finding averages and ranges. R can only do this if it knows they are numbers.
+
+The code chunk below will clean up the data for you by converting all columns to numeric values:
 
 ```{r}
 leanpub_df <- leanpub_df %>%
-  mutate_at(dplyr::vars(readers, suggested, minimum),
-                         as.numeric)
+  mutate(across(c(readers, suggested, minimum),
+                         as.numeric))
 ```
 
-Now that the data are being treated as numeric values properly, we can obtain some summary statistics for your `leanpub_df` dataset. Use a function we have discussed to do this.
+#### [Breaking it down]{.underline}
+
+-   `leanpub_df <-`: Will replace the existing `leanpub_df` with the updated version
+
+-   `leanpub_df`: The object we will manipulate
+
+-   `mutate`: is a dplyr function used to create or modify columns in a data frame
+
+-   `across` applies the mutate function to multiple columns, in this case the list (`c`) of `readers`, `suggested`, `and minimum`.
+
+-   `as.numeric` converts those columns into number format.
+
+Now that the data are properly being treated as numeric values, you can obtain some summary statistics for your `leanpub_df` dataset. Use a function we have discussed in to do this.
+
+*Hint: You can revisit chapter 19 and scroll to section [19.0.5 What does this object look like?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html#). As you may recall we covered how the `summary` function computes summary statistics for numeric data. You are trying to get an overview of summary statistics such as the minimum and maximum values, mean (average), median, and more helpful info for each column.*
 
 ```{r, solution = TRUE}
 ### Your code here
@@ -130,7 +288,15 @@ Now that the data are being treated as numeric values properly, we can obtain so
 
 ## Plotting the data
 
-To investigate our question, we will want to investigate any potential relationship between the number of readers for a book and the suggested price. We will plot these data in the form of a scatterplot. In upcoming chapters we will go into more detail about how to make plots yourself.  
+Let’s visualize the data using [ggplot2](https://ggplot2.tidyverse.org/) to explore our question:
+
+Is there a relationship between how many readers a book has and the suggested price?
+
+To do this, you’ll create a scatter plot. The scatter plot will show how the two numeric variables relate to each other.
+
+*Note: You will learn more about plots in chapter [Chapter 39 Plotting Data](https://datatrail-jhu.github.io/DataTrail/plotting-data.html) but for now we have already created the code to make the plot. The breaking it down section can provide some helpful information about what the code is doing.*
+
+To create the scatter plot use the code chunk below:
 
 ```{r}
 ggplot(leanpub_df, aes(readers, suggested)) +
@@ -138,27 +304,112 @@ ggplot(leanpub_df, aes(readers, suggested)) +
   theme_minimal()
 ```
 
-## Get the stats
+#### [Breaking it down]{.underline}
 
-Is there a relationship between `readers` and `suggested` price? We can also use a correlation to ask this question.
+-   **`ggplot(leanpub_df, aes(readers, suggested))`**: This sets up the plot using your dataset (`leanpub_df`).
+
+    -   `aes()`: Defines the aesthetics: what goes on the x-axis, y-axis, and how to color the bars.
+
+-   **`geom_point(color = "blue")`**: This adds blue points to the plot. One for each book in your dataset.
+
+-   **`theme_minimal()`**: This applies a clean, simple minimalist look to your plot (no extra clutter).
+
+## Calculating the stats
+
+Now that you’ve plotted the data, let’s take a look at the numbers!
+
+You will want to answer the question: Is there a relationship between the number of readers a book has and its suggested price by using a correlation test? This helps us measure how closely two numeric variables move together.
+
+*Note: We will learn more about correlation in chapter [53 In Practice Using Stats 53.4.2 How to know if your data is underpowered for your question](https://datatrail-jhu.github.io/DataTrail/in-practice-using-stats.html). The* [**Breaking it down**]{.underline} *section can provide some helpful information about what the code is doing.*
+
+To check if there is a relationship between readers and suggested price use this code chunk:
 
 ```{r}
 cor.test(leanpub_df$readers, leanpub_df$suggested)
 ```
-If the p value reported is very very small, then there might be a relationship. But also it is likely you'll need to collect more data to get a more confident conclusion using this test.
 
-### Conclusion
+### [Breaking it down]{.underline}
+
+-   `cor.test()`: This a function that calculates the correlation between two variables.
+
+-   `leanpub_df$readers`: Pulls the **`readers`** column from the dataset.
+
+-   `leanpub_df$suggested`: Pulls the `suggested` price column from the dataset.
+
+-   The result should include:
+
+    -   A correlation coefficient (between -1 and 1):
+
+        -   If it’s close to 1, the two variables go up together.
+
+        -   If it’s close to -1, one goes up while the other goes down.
+
+        -   If it’s close to 0, there’s no clear relationship.
+
+    -   A p-value: Tells you whether the relationship is statistically significant.
+
+### Understanding the p-value
+
+When running the correlation test, you'll see a p-value:
+
+-   If the p-value is very small (generally less than 0.05), it suggests there might be a real relationship between the number of readers and the suggested price and that it’s not just due to random chance.
+-   It is important to keep in mind that even if the p-value is small, it doesn’t always mean that there is a strong or important relationship.
+-   It can mean that more data will be necessary to be certain.
+
+If the p value reported is very very small, then there might be a relationship. But also it is likely you'll need to collect more data to get a more confident conclusion using this test. Remember "correlation is not causation".
+
+## Conclusion
 
 Write up your thoughts about this data science project here and answer the following questions:
 
-- What did we find out about our questions?
-- How did we explore our questions?
-- What did our explorations show us?
-- What follow up data science questions arise for you regarding this candy dataset now that we've explored it some?
+-   What did you find out about your questions?
 
-## Print out session info
+    We explored whether there’s a relationship between the number of readers a Leanpub book has and its suggested price. Using a scatterplot and a correlation test, we found a moderate negative correlation (r ≈ -0.41), suggesting that books with more readers tend to have lower suggested prices. However, the p-value (0.27) indicates that this relationship is not statistically significant, meaning we can’t draw strong conclusions from this data alone. More data would be needed to better understand the relationship.
 
-Session info is a good thing to print out at the end of your notebooks so that you (and other folks) referencing your notebooks know what software versions and libraries you used to run the notebook.
+-   How did you explore the questions?
+
+    We followed a step-by-step data science workflow:
+
+    -   Loaded packages like [readr](https://readr.tidyverse.org/), [dplyr](https://dplyr.tidyverse.org), and [ggplot2](https://ggplot2.tidyverse.org/)
+
+    -   Set up the project folder and check for the right structure
+
+    -   Import a Google Sheet as our dataset
+
+    -   Clean the data, making sure numbers were treated as numeric values
+
+    -   Explore the structure of the dataset using `dim()` and `class()`
+
+    -   Visualizing the data as a scatterplot using the [ggplot2](https://ggplot2.tidyverse.org/) package
+
+    -   Ran a statistical test using `cor.test()` to check for a correlation
+
+-   What did those explorations show?
+
+    Our explorations showed a moderate negative correlation between the number of readers a Leanpub book has and its suggested price, meaning that books with more readers tended to have slightly lower suggested prices. However, the correlation was not statistically significant, indicating that this observed relationship could be due to random chance rather than a true pattern in the data. Overall, this means that with the current dataset, we cannot confidently conclude that the number of readers influences the suggested price. To gain a clearer understanding, we would need a larger dataset or additional information.
+
+-   What follow-up data science questions come to mind now that you’ve spent some time exploring the dataset?
+
+    -   Are there other factors influencing the number of readers or suggested price? For example, how do book genre, publication date, or author popularity relate to readers and price?
+
+    -   How does the minimum price relate to readers and suggested price?
+
+    -   Could the difference between minimum and suggested price influence reader behavior?
+
+-   Does the data quality or sample size affect our findings?\
+    Would collecting more data, or data from different time periods, improve the reliability of our conclusions?
+
+## Printing out session info
+
+It’s good practice to include your session info at the end of your R Markdown notebook. This provides an overview of the R environment when you used it including the version of R, the platform you’re running on, and the packages and libraries (including version numbers) that were loaded when the notebook was run.
+
+This is helpful for:
+
+-   Reproducibility (making sure others can run your code the same way)
+
+-   Understanding what software versions were used
+
+You can print the session info by running the `sessionInfo()` code chunk:
 
 ```{r}
 sessionInfo()

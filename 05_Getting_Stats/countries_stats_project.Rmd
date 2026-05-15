@@ -1,43 +1,74 @@
 ---
 title: "Stats Project"
 author: "DataTrail Team"
-output: html_notebook
+output:
+  html_notebook:
+    df_print: paged
 ---
 
-# Stats Project
+# Stats
+
+## Project: Country's literacy rates and life expectancy
+
+In this project, you will utilize the same country datasets from project 3 to explore the relationship between literacy rates and life expectancy.
+
+The dataset includes information from multiple global sources, including literacy rates and life expectancy data for both males and females. You will load, clean, and plot the data using tools from the tidyverse. Once the data is in good shape, you will use the correlation statistic to explore the relationships of numerous literacy and life expectancy variables.
 
 ## Objectives for this project
 
 To complete this project you’ll need to do a few things within this file. As you go through the notebook, you will have further instruction on how to complete these objectives.
 
-1. Go through this notebook, reading along.
+1.  At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`, replace it with your name in the quotes.
 
-2. Fill in empty or incomplete code chunks when prompted to do so.
+2.  Go through this notebook, reading along.
 
-3. Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
+3.  Fill in empty or incomplete code chunks when prompted to do so.
 
-4. At the very top of this file, put your own name in the `author:` place. Currently it says `"DataTrail Team"`. Be sure to put your name in quotes.
+4.  Run each code chunk as you come across it by clicking the tiny green triangles at the right of each chunk. You should see the code chunks print out various output when you do this.
 
-5. In the `Conclusions` section, write up responses to each of these questions posed here.
+5.  In the Conclusions section at the end, write thoughtful responses to each of the questions provided.
 
-6. When you are satisfied with what you've written and added to this document you'll need to save it. In the menu, go to `File` > `Save`. Now the `nb.html` output resulting file will have your new output saved to it.
+6.  When done with this project notebook save the file by going to File \> Save in the RStudio menu. This will update the output `.nb.html` file to reflect your changes.
 
-7. Open up the resulting `countries_stats.nb.html` file and click `View in Web Browser`. Does it look good to you? Did all the changes appear here as you expected.
+7.  Open up the resulting `countries_stats.nb.html` file and click “View in Web Browser”. Check to make sure everything looks good and your changes are showing up as expected.
 
-8. Upload your `Rmd` and your `nb.html` to your assignment folder (this is something that will be dependent on what your instructors have told you -- or if you are taking this on your own, just collect these projects in one spot, preferably a Google Drive)!
+8.  Upload your `Rmd` and your `nb.html` to your assignment folder (this is something that will be dependent on what your instructors have told you – or if you are taking this on your own, just collect these projects in one place, preferably a Google Drive).
 
-9. Pat yourself on the back for finishing this project!
+## Goal
 
-## The goal of this analysis
+The goal of this analysis is:
 
-<Write here what the goal of this analysis is. What question are we trying to answer?>
+\<Write here what the goal of this analysis is. What question are you trying to answer?\>
 
-## Set up
+How do different country-level factors like population density, GDP, life expectancy, fertility rate, etc. relate to each other across the world?
 
-Let's load these packages for use.
+## R Packages
+
+For a refresher of what an R package is See [Data Trail Section 22.0.1 What is an R package?](https://datatrail-jhu.github.io/DataTrail/r-packages.html) or the Set up Packages section in the previous project notebook
+
+These are the R packages you will be using:
+
+-   [tidyverse](https://www.tidyverse.org/packages/)
+
+-   [readr](https://readr.tidyverse.org/)
+
+-   [dplyr](https://dplyr.tidyverse.org)
+
+-   [ggplot2](https://ggplot2.tidyverse.org/)
+
+-   [tidyr](https://tidyr.tidyverse.org/index.html)
+
+-   [corrplot](https://rpubs.com/melike/corrplot)
+
+-   [knitr](https://www.overleaf.com/learn/latex/Knitr)
+
+## Setting up packages
+
+Before using any package in R, first make sure it’s installed and ready to go! Then load the packages using the **`library()`** function including the name of the package in the parenthesis:
+
+*Note: You can add packages as needed or not use/remove the ones not needed as you see fit.*
 
 ```{r}
-## you can add more, or change...these are suggestions
 library(tidyverse)
 library(readr)
 library(dplyr)
@@ -47,9 +78,9 @@ library(corrplot)
 library(knitr)
 ```
 
-## Set up directories
+## Setting up directories
 
-Here we are going to make a data directory if it doesn't already exist.
+Here, you are making sure there’s a folder called `"data"` in your project. If it doesn’t already exist, it will be created it using the code below:
 
 ```{r}
 if (!dir.exists("data")) {
@@ -60,26 +91,34 @@ if (!dir.exists("plots")) {
 }
 ```
 
+## **Getting the data**
 
-## Get the data
+In a previous project in `03_Cleaning_Data`, we cleaned a dataset about countries and saved this to an RDS file. Read in this file from its location in the `03_Cleaning_Data` folder.
 
-In a previous project in `03_Cleaning_Data`, we cleaned a dataset about countries and saved this to an RDS file.
-Read in this file from its location in the `03_Cleaning_Data` folder. **Hint** you will need to use a `..` to backout of this current folder and reference the parent folder of `05_Get_Stats`.
+Hint: you will need to use a `..` to back out of this current folder and reference the parent folder of `05_Getting_Stats`.
 
 ```{r, solution = TRUE}
-# Read in the dataset for un_df
+# Read in the dataset for countries_df
 ### Your code here
 ```
 
-Use functions we have discussed previously to see remind yourself of what vairables are ih `countries_df`.
+## Exploring the data
+
+Use functions we have discussed previously to see remind yourself of what variables are in `countries_df`.
+
+Hint: You can revisit chapter 18 section [18.1.1 Subsetting data frames](https://datatrail-jhu.github.io/DataTrail/data-frames-1.html) and [19.0.4 Are there named features of this object?](https://datatrail-jhu.github.io/DataTrail/basic-commands-in-r.html)
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-### Cleaning the datasets
+### Cleaning the data
 
-We're going to select down to columns we are interested in .
+You need to simplify the dataset by selecting columns that are most relevant to your analysis. This will make the dataset easier to work with and help you focus on exploring the relationships between key country-level indicators (e.g population, economy, health, and development). This will help with understanding global patterns and trends.
+
+You will also rename some of the longer column names to shorter ones so that you can more easily manage these variables later.
 
 ```{r}
 countries_df <- countries_df %>%
@@ -99,20 +138,61 @@ countries_df <- countries_df %>%
          pop_using_improved_drinking_water_urban_rural_percent)
 ```
 
+#### [**Breaking it down:**]{.underline}
 
-There are some variables here that need to be split up into two columns much like we did before in `03_Cleaning_the_Data`.
+-   `countries_df <- countries_df %>%`: This tells R to take the existing `countries_df` dataset and update it with a new version created by the steps that follow.
 
-Repeat the steps we used in that project for the following columns:
+-   `select(...)`: This function keeps only the columns we list inside the parentheses and drops all the others.
 
-`labour_force_participation_female_male_pop_percent`
-`pop_using_improved_drinking_water_urban_rural_percent`     
+-   `country`: Keeps the column called `country` as-is.
 
+-   Inside `select()`, the syntax `new_name = old_name` tells R to “Keep `old_name`, but call it `new_name` from now on.”
+
+    -   `pop = population_in_thousands_2017`: Keeps the `population_in_thousands_2017` column, but renames it to `pop`.
+
+    -   `pop_density = population_density_per_km2_2017`: Keeps the population density column and renames it to `pop_density`.
+
+    -   `sex_ratio = sex_ratio_m_per_100_f_2017`: Renames the column showing number of males per 100 females to `sex_ratio`.
+
+    -   `gdp = gdp_per_capita_current_us`:Renames GDP per capita to `gdp`.
+
+    -   `urban_perc = urban_population_percent_of_total_population`: Renames the column showing % of people in urban areas to `urban_perc`.
+
+    -   `growth_rate = population_growth_rate_average_annual_percent`: Renames annual population growth rate to `growth_rate`.
+
+    -   `fertility = fertility_rate_total_live_births_per_woman`: Renames fertility rate column to `fertility`.
+
+    -   `life_exp_female = life_expectancy_at_birth_females`: Renames female life expectancy to `life_exp_female`.
+
+    -   `life_exp_male = life_expectancy_at_birth_males`: Renames male life expectancy to `life_exp_male`.
+
+    -   `infant_mortality = infant_mortality_rate_per_1000_live_births`: Renames infant mortality rate to `infant_mortality`.
+
+-   `labour_force_participation_female_male_pop_percent`: Keeps this column as-is (no renaming).
+
+-   `seats_held_women = seats_held_by_women_in_national_parliaments_percent`: Renames column showing % of women in national parliament to `seats_held_women`.
+
+-   `pop_using_improved_drinking_water_urban_rural_percent`: Keeps this column as-is (no renaming).
+
+There are some variables here that need to be split up into two columns much like we did before in `03_Cleaning_Data`.
+
+Hint: *You can revisit chapter 32 section [32.0.9 Separating Columns](https://datatrail-jhu.github.io/DataTrail/how-to-tidy-data.html).*
+
+`labour_force_participation_female_male_pop_percent` `pop_using_improved_drinking_water_urban_rural_percent`
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-Now all of the data in our set, except for `country`, should be numeric, but it isn't necessarily. Use `mutate_at` but exclude `country` and try to use as.numeric on all the other variables. **Hint** you will need an argument that specifies `vars(-country)` to exclude the `country` column.
+Now all of the variables in this dataset, except for `country`, should be numeric but that might not be the case. Try using `as.numeric` within `mutate` on all of the variables except `country`.
+
+*Hint: In an earlier project DT 02 you used `across` to `mutate` multiple columns (variables) you wanted to change at once. You can learn more about mutating multiple columns [here](https://dplyr.tidyverse.org/reference/across.html), where they explain how to use `across`. You will need an opperator that specifies exclude the `country` column.*
+
+*Note: A warning may appear that happens when R tries to convert a value to a number (`as.numeric`) but can't (for example, if a column contains text or special characters). R will then turn those values into `NA` (missing values). This is just a warning and doesn't stop your code from running.*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
@@ -120,19 +200,22 @@ Now all of the data in our set, except for `country`, should be numeric, but it 
 
 Save this version of your data to an RDS file in this project.
 
+\
+*Hint: revisit chapter 24 section [24.0.5 Writing CSV files into Posit Cloud](https://datatrail-jhu.github.io/DataTrail/dataset-file-types.html) and [24.1.0.2 Serialized R objects (.rds)](https://datatrail-jhu.github.io/DataTrail/dataset-file-types.html)*
+
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-## Plot the data
+## Plotting the data
 
-Let's explore what kinds of distributions these variables have?
+Let's explore the kinds of distributions these variables have.
 
 Use ggplot2::geom_density() to do this for at least 5 variables of your choice in `countries_df`.
 
-```{r, solution = TRUE}
-### Your code here
-```
+To better understand the patterns and ranges in this dataset, you will explore the distribution of several key variables using `geom_density()` from the ggplot2 package.
+
+Create density plots for at least 5 variables of interest from `countries_df`. Write your code in the code chunks below:
 
 ```{r, solution = TRUE}
 ### Your code here
@@ -154,30 +237,51 @@ Use ggplot2::geom_density() to do this for at least 5 variables of your choice i
 ### Your code here
 ```
 
-## Run stats  
+```{r, solution = TRUE}
+### Your code here
+```
 
-For this project, we are going to run some exploratory stats.
+## Calculating the stats
 
-Use the `cor()` function to create a correlation matrix of all the numeric variables in `countries_df`
+Now you are ready to explore how the variables relate to each other. You can use correlation analysis, which helps with seeing the relationship with numeric variables if they tend to increase or decrease together. You will use the `cor()` function to calculate correlation coefficients (values between -1 and 1) that tell you how strong the relationship is between two variables. If you remember from earlier projects: a value closer to 1 means a strong positive relationship while a value closer to -1 means a strong negative relationship.
+
+Use the `cor()` function to create a correlation matrix of all the numeric variables in `countries_df`.
+
+*Hint: chapter 53 has section [53.5.3 Correlation tests](https://datatrail-jhu.github.io/DataTrail/in-practice-using-stats.html) but remember that if you need help with how the `cor()` function works you can type `?cor` into your Console to pull up the help page. This will show you the function's arguments, examples, and how to use it.*
+
+*Hint: If you’re getting NAs as a result in the table, check whether your data contains missing values. There’s an argument you can add to the function to handle this by excluding incomplete rows.*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-Make a table out of this correlation matrix.
+Now, format the correlation matrix into a readable table.
+
+*Hint: You can revisit chapter 46 section [46.0.3 Improving the table output](https://datatrail-jhu.github.io/DataTrail/tables-in-r.html).*
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
 
-Use the corrplot::corrplot() function to make a correlation matrix from these data.
+Let’s create a visual version of the correlation matrix using `corrplot()` from the corrplot package. This helps us quickly spot strong relationships or interesting groupings between variables.
+
+Use the `corrplot::corrplot()` function to make a correlation matrix.
+
+Hint: You can see a quick overview on the [corrplot() function](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html).
+
+Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
 ```
+
 What do you think about the interaction and groupings of these variables? Is there anything surprising?
 
-Save your plot using the following code.
+Save your plot in the plots folder. Write your code in the code chunk below:
 
 ```{r, solution = TRUE}
 ### Your code here
@@ -185,28 +289,55 @@ Save your plot using the following code.
 
 ### Further exploration
 
-Based on the plot above, do some statistics and a plot to further explore the relationship of two of the variables in `countries_df`.
+Now that you’ve seen how variables in the dataset relate to one another using a correlation matrix, let’s take it a step further.
+
+Choose two numeric variables from `countries_df` that seem to have a meaningful relationship based on the correlation plot. Visualize the relationship with a plot of your choice.
+
+Write your code in the code chunk below:
 
 ```{r}
 # Make a plot of your choice here
 ```
 
+Choose two numeric variables from `countries_df` that seem to have a meaningful relationship based on the correlation plot. Run a statistical test that you think may work best to explore how strongly the two variables are related.
+
+Hint: you may want to revisit chapter 53 section [53.5 How do I know what test to use?](https://datatrail-jhu.github.io/DataTrail/in-practice-using-stats.html)
+
+Write your code in the code chunk below:
+
 ```{r}
 # Run a statistical test of your choice here
 ```
 
-### Conclusion
+## Conclusion
 
 Write up your thoughts about this data science project here and answer the following questions:
 
-- What have you learned about the relationship of the two variables you chose?
-- Was anything surprising or confusing?
-- What alternative hypothetical explanations are there for the observed relationships you are seeing? (Remember about third variable problem means you can't say things are causal by correlations)
-- In a hypothetical future study, what questions would you want to explore and what kind of data would you want to use to do this exploration?
+-   What have you learned about the relationship of the two variables you chose?
 
-## Print out session info
+    I explored the relationship between GDP per capita and life expectancy for females. The correlation matrix and visualization both showed a clear positive relationship with countries with higher GDP per capita tending to have higher female life expectancy. This suggests that economic resources may be linked to better healthcare, nutrition, and living conditions that contribute to longer lives.
 
-Session info is a good thing to print out at the end of your notebooks so that you (and other folks) referencing your notebooks know what software versions and libraries you used to run the notebook.
+-   Was anything surprising or confusing?
+
+    It was surprising to see that not all variables with strong social relevance (like percentage of women in parliament or access to improved drinking water) had strong correlations with life expectancy or GDP. It’s a good reminder that meaningful relationships don’t always show up clearly in numeric comparisons.
+
+-   What alternative hypothetical explanations are there for the observed relationships you are seeing? (Remember correlation is not causation, what hidden factors could drive both variables?)
+
+    The correlation between GDP and life expectancy doesn’t necessarily mean one causes the other. It’s possible that a third variable (e.g education level, health infrastructure, or government stability) is influencing both. Correlation can highlight patterns, but it doesn’t explain why those patterns exist.
+
+-   In a hypothetical future study, what questions would you want to explore and what kind of data would you want to use to do this exploration?
+
+    In a hypothetical future study, it would be interesting to explore whether gender equity (like labour force participation or seats held by women) influences health outcomes or development indicators. To do this, perhaps a more detailed time-series of data would be helpful to look at trends over time and maybe additional variables like education levels, healthcare access, or government spending on public health and education.
+
+## Printing out session info
+
+It’s good practice to include your session info at the end of your R Markdown notebook. This provides a snapshot of your R environment. It includes the version of R, the platform you’re running on, and the packages and libraries (including version numbers) that were loaded when the notebook was run.
+
+This is helpful for:
+
+-   Reproducibility (making sure others can run your code the same way)
+
+-   Understanding what software versions were used
 
 ```{r}
 sessionInfo()
